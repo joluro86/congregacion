@@ -3,8 +3,8 @@
 {% block content %}
 <div class="contenedor_grupos">
     <div class="grupos">    
-        {% for g in grupos %}
-        <a href= "{% url 'publicadores_por_grupo' g.numero %}">{{ g }}</a><br>
+        {% for gr in grupos %}
+        <a href= "{% url 'publicadores_por_grupo' g.numero %}">{{ gr }}</a><br>
         {% endfor %}
     </div>
     
