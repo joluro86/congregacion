@@ -1,0 +1,17 @@
+{% extends "index.html" %}
+{% block content %}
+    <div class="contenedor_informe">
+        <div class="informe">
+            <h1>Informes - Grupo {{grupo.numero}}</h1>
+            <table id="table_id" class="display tabla_informes table table-sm table-hover">
+                <tbody>
+                    {% for key, value in request.session.carro.items %}
+                    <tr>
+                        <td class="nombre_pub">{{ value.nombre }} 111</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>             
+        </div>
+    </div>
+{% endblock content %}
