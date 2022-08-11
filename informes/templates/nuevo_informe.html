@@ -1,0 +1,38 @@
+{% extends "index.html" %}
+{% block content %}
+    <div class="contenedor_informe">
+        <div class="informe">
+            <h1>Informes - Grupo {{grupo.numero}}</h1>
+            <table id="table_id" class="display tabla_informes table table-sm table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                      <th scope="col">Id</th>
+                      <th scope="col">Publicador</th>
+                      <th scope="col">Publicaciones</th>
+                      <th scope="col">Videos</th>
+                      <th scope="col">Horas</th>
+                      <th scope="col">Revistas</th>
+                      <th scope="col">Revisitas</th>
+                      <th scope="col">Cursos</th>
+                      <th scope="col">Observaciones</th>
+                    </tr>
+                  </thead>
+                <tbody>
+                    {% for key, value in request.session.carro.items %}
+                    <tr>
+                        <td>{{ value.id }}</td>
+                        <td class="nombre_pub">{{ value.nombre }}</td>
+                        <td><input type="number" class="form-control input_informe"></td>
+                        <td><input type="number" class="form-control input_informe"></td>
+                        <td><input type="number" class="form-control input_informe" value="0"></td>
+                        <td><input type="number" class="form-control input_informe"></td>
+                        <td><input type="number" class="form-control input_informe"></td>
+                        <td><input type="number" class="form-control input_informe"></td>
+                        <td><input type="text" class="form-control input_informe_observaciones"></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>             
+        </div>
+    </div>
+{% endblock content %}
