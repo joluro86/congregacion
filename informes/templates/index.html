@@ -16,6 +16,7 @@
 	<link href="{% static 'icons/css/brands.css' %}" rel="stylesheet">
 	<link href="{% static 'icons/css/solid.css' %}" rel="stylesheet">
 	<link href="{% static 'icons/css/all.css' %}" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
 </head>
 
 <body>
@@ -75,12 +76,13 @@
 
 	{% endblock content %}
 
-
-
-	<script src="{% static 'js/jquery.min.js' %}"></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+	
 	<script src="{% static 'js/popper.js' %}"></script>
 	<script src="{% static 'js/bootstrap.min.js' %}"></script>
 	<script src="{% static 'js/main.js' %}"></script>
+	<script src="{% static 'logica_informes.js' %}" ></script>
 
 </body>
 

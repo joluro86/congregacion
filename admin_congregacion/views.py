@@ -1,11 +1,5 @@
-from ast import For
-from django.http import HttpResponse
 from django.shortcuts import render
-
 from admin_congregacion.models import *
-from informes.carroinforme import Carro_informe
-
-# Create your views here.
 
 def publicadores_por_grupo(request, id):
     grupos= Grupo.objects.all()
