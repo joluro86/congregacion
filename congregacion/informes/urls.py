@@ -15,8 +15,8 @@ Including another URLconf
 """
 
 from informes.views import index
-from django.urls import include, path
+from django.urls import path
 
 urlpatterns = [
-    path('index', index, name="index"),
+    path('', index, name="index"),
 ]

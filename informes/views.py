@@ -17,9 +17,8 @@ def nuevo_informe(request, id):
     grupo= Grupo.objects.get(numero=id)
     publicadores = Publicador.objects.filter(grupo=grupo)  
     carro = Carro_informe(request)
-    request.session['grupo'] = 100
-    i= request.session.get('grupo')
-    print(i)
+    for p in publicadores:
+        carro.agregar(p)
     return render(request, 'nuevo_informe.html',{'grupo':grupo} )
 
 def guardar_informe_grupo(request, id):
@@ -36,6 +35,11 @@ def guardar_informe_grupo(request, id):
         carro_informe.cambiar_cantidad_informe(id_publicador, p, v, h, r, c, o)
         
     return redirect('nuevo_informe', id=id)
+
+def finalizar_informe(request):
+    carro = Carro_informe(request)
+    for informe in carro:
+        print(informe)
         
 
     

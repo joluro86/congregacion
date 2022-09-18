@@ -65,7 +65,6 @@ class Carro_informe:
                     value['revisitas']=r
                     value['cursos']=c
                     value['observaciones']=o
-                    print(o)
                     break
         self.guardar_carro()
     

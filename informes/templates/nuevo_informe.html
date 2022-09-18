@@ -1,44 +1,52 @@
 {% extends "index.html" %}
 {% block content %}
-    <div class="contenedor_informe">
-        <div class="informe">
-            <h1>Informes - Grupo {{grupo.numero}}</h1>
-            <table id="table_id" class="display tabla_informes table table-sm table-hover tabla_informes_grupo">
-                <thead class="thead-dark">
-                    <tr>
-                      <th scope="col">Publicador</th>
-                      <th scope="col">Publicaciones</th>
-                      <th scope="col">Videos</th>
-                      <th scope="col">Horas</th>
-                      <th scope="col">Revisitas</th>
-                      <th scope="col">Cursos</th>
-                      <th scope="col">Observaciones</th>
-                      <th>Acción</th>
-                    </tr>
-                  </thead>
-                <tbody>
-                    {% for key, value in request.session.carro.items %}
-                    
-                    {% if key != "grupo" %}                     
-                    <tr>
-                        <form action="{% url 'guardar_informe_publicador' grupo.numero %}" method="POST">
-                            {% csrf_token %}
-                            <input type="hidden" name="id" value="{{ value.id }}">
-                            <td class="nombre_pub">{{ value.nombre }}</td>
-                            <input type="hidden" name="nombre" value="{{value.nombre }}">
-                            <td><input type="number" class="form-control input_informe" name="pub" value="{{ value.publicaciones }}"></td>
-                            <td><input type="number" class="form-control input_informe" name="vid" value="{{ value.videos }}"></td>
-                            <td><input type="number" class="form-control input_informe" name="hor" value="{{ value.horas }}"></td>
-                            <td><input type="number" class="form-control input_informe" name="rev" value="{{ value.revisitas }}"></td>
-                            <td><input type="number" class="form-control input_informe" name="cur" value="{{ value.cursos }}"></td>
-                            <td><input type="text" class="form-control input_informe_observaciones" name="obs" value="{{ value.observaciones }}"></td>
-                            <td><button type="submit" class="btn btn-primary btn-sm">Guardar</button></td>
-                        </form>
-                    </tr>
-                    {% endif %}
-                    {% endfor %}
-                </tbody>
-            </table>         
-        </div>
+<div class="contenedor_informe">
+    <div class="informe">
+        <h1 style="background-color: red;">Informes - Grupo {{grupo.numero}} - {{grupo.superintendente}}</h1>
+        <table id="table_id" class="display tabla_informes table table-sm table-hover tabla_informes_grupo">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Publicador</th>
+                    <th scope="col">Publicaciones</th>
+                    <th scope="col">Videos</th>
+                    <th scope="col">Horas</th>
+                    <th scope="col">Revisitas</th>
+                    <th scope="col">Cursos</th>
+                    <th scope="col">Observaciones</th>
+                    <th scope="col">Guardar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key, value in request.session.carro.items %}
+
+                {% if key != "grupo" %}
+                <tr>
+                    <form action="{% url 'guardar_informe_publicador' grupo.numero %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="id" value="{{ value.id }}">
+                        <td class="nombre_pub">{{ value.nombre }}</td>
+                        <input type="hidden" name="nombre" value="{{value.nombre }}">
+                        <td><input type="number" class="form-control input_informe" name="pub"
+                                value="{{ value.publicaciones }}"></td>
+                        <td><input type="number" class="form-control input_informe" name="vid"
+                                value="{{ value.videos }}"></td>
+                        <td><input type="number" class="form-control input_informe" name="hor"
+                                value="{{ value.horas }}"></td>
+                        <td><input type="number" class="form-control input_informe" name="rev"
+                                value="{{ value.revisitas }}"></td>
+                        <td><input type="number" class="form-control input_informe" name="cur"
+                                value="{{ value.cursos }}"></td>
+                        <td><input type="text" class="form-control input_informe_observaciones" name="obs"
+                                value="{{ value.observaciones }}"></td>
+                        <td><button style="height: 25px;" type="submit" class="btn btn-sm"><i
+                                    class="fa-regular fa-floppy-disk" style="padding: 0%;margin-top: 0%;"></i></button>
+                        </td>
+                    </form>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
+</div>
 {% endblock content %}
