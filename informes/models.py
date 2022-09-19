@@ -15,12 +15,12 @@ class InformeMensual(models.Model):
         db_table = 'Informe_mensual'
         managed = True
         verbose_name = "Informe Mensual"
-        verbose_name_plural = "Informes Mensuales"
+        verbose_name_plural = "Informe Mensual"
         ordering= ['id']
         
 
     def __str__(self):
-        return str('Mes: ' + str(self.mes) + ' ' + str(self.año))
+        return str(str(self.mes))
     
 class InformePublicador(models.Model):
     informe_mensual = models.ForeignKey(InformeMensual, on_delete=models.CASCADE)
@@ -30,8 +30,8 @@ class InformePublicador(models.Model):
     horas = models.IntegerField(default=0)
     revisitas = models.IntegerField(null=True, blank=True)
     cursos = models.IntegerField(null=True, blank=True)
-    observaciones = models.IntegerField(null=True, blank=True)
-    estado = models.CharField('Estado', choices=estado, max_length=100)    
+    observaciones = models.CharField(null=True, blank=True, max_length=200)
+    estado = models.CharField('Estado', choices=estado, max_length=100, default='Abierto')    
     
 
     class Meta:

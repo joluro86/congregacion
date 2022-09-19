@@ -15,6 +15,7 @@ class Carro_informe:
     def agregar(self, publicador, ):
         if(str(publicador.id) not in self.carro.keys()):
             self.carro[publicador.id]={
+                'grupo': publicador.grupo.numero,
                 'mes': 'agosto',
                 'año': 2022,
                 'id':publicador.id,
@@ -124,6 +125,7 @@ class Carro_informe:
         self.guardar_carro()
 
     def limpiar_carro(self):
+        print("llegue")
         self.session["carro"]={}
         self.session.modified=True
 

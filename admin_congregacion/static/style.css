@@ -156,3 +156,17 @@
     padding: 0px !important;
     margin: 0px !important;
 }
+
+.botones .finalizar_informe{
+    margin-right: 10px;
+}
+
+.botones .cancelar_informe:hover{
+    background-color: #e2e2e2 !important;
+    color: #535353 !important;
+}
+
+.botones .finalizar_informe:hover{
+    background-color: #f1bc31 !important;
+    border: none;
+}
