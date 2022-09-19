@@ -24,9 +24,8 @@ def nuevo_informe(request, id):
     finally:
         
         if str(grupo_informe) != str(id):
-            print("grupo inf: "+ grupo_informe+ " id: "+str(id))
+            print("grupo inf: "+ str(grupo_informe)+ " id: "+str(id))
             limpiar_carro(request)
-
 
     carro = Carro_informe(request)
     for p in publicadores:
