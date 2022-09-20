@@ -1,13 +1,20 @@
 {% extends "index.html" %}
 
 {% block content %}
-<div class="div-grupos">    
+<div class="div-grupos">
     {% for g in grupos %}
-    <div class="link" ><a href="#">{{ g }}</a></div>
+    <div class="link"><a href="#">{{ g }}</a></div>
     {% endfor %}
 </div>
 
 <div class="publicadores_grupo">
     <h1>Publicadores</h1>
+    {% if messages %}
+    <ul class="messages list-group text-center">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }} list-group-item" {% endif %}>{{ message }}</li>
+            {% endfor %}
+    </ul>
+    {% endif %}
 </div>
 {% endblock content %}
