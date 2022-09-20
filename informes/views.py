@@ -1,14 +1,9 @@
-from http.client import HTTPResponse
 from django.shortcuts import render, redirect
-
+from django.contrib import messages
 from admin_congregacion.models import Grupo, Publicador
 from informes.carro_informe_grupo import Carro_informe
 from informes.forms import InfomeMensualForm
 from informes.models import InformeMensual, InformePublicador
-
-from django.views.generic import CreateView
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
 
 def index(request):
     return render(request, 'index.html')
@@ -16,50 +11,47 @@ def index(request):
 def Crear_Informe_Actual(request):
 
     if (request.method == 'POST'):
-        formset = InfomeMensualForm(request.POST)
-        if formset.is_valid():
-            formset.save()
-                
+        informes_abiertos= InformeMensual.objects.filter(estado='1')
+        if len(informes_abiertos)==0:
+            formset = InfomeMensualForm(request.POST)
+            if formset.is_valid():
+                formset.save()
+        else:
+            formset = InfomeMensualForm(request.POST)
+            messages.warning(request, 'No se pudo crear este registro debido a que existen informes pendientes por cerrar.')
+            return render(request, 'informe_Actual.html', {'form': formset})
+
     formset = InfomeMensualForm()
     return render(request, 'informe_Actual.html', {'form': formset})
 
-    """"
-    try:
-        informes_abiertos= InformeMensual.objects.filter(estado='1')
-        if len(informes_abiertos)>0:
-            return redirect('/')
-    except:
-        pass
+def nuevo_informe(request, id):
 
-    
-    login_url = 'grupos'
-    template_name = 'Informe_actual.html'
-    form_class = InfomeMensualForm
-    success_url = '/grupos/'
-    """
-    
-        
-
-def nuevo_informe(request, id):       
+    informes_abiertos= InformeMensual.objects.filter(estado='1')
     grupo= Grupo.objects.get(numero=id)
-    publicadores = Publicador.objects.filter(grupo=grupo) 
+    print(len(informes_abiertos))
+    if len(informes_abiertos)==0:       
+        messages.warning(request, 'No se pueden registrar informes. Comuniquese con el administrador.')
+        return redirect('grupos')
+    else:
+        publicadores = Publicador.objects.filter(grupo=grupo) 
 
-    try:
-        grupo_informe= request.session.get('grupo')
-        print("entre try")
-    except:
-        print("entre except")
-        grupo_informe= request.session.get('grupo', '0')
-    finally:
-        
-        if str(grupo_informe) != str(id):
-            print("grupo inf: "+ str(grupo_informe)+ " id: "+str(id))
-            limpiar_carro(request)
+        try:
+            grupo_informe= request.session.get('grupo')
+            print("entre try")
+        except:
+            print("entre except")
+            grupo_informe= request.session.get('grupo', '0')
+        finally:
+            
+            if str(grupo_informe) != str(id):
+                print("grupo inf: "+ str(grupo_informe)+ " id: "+str(id))
+                limpiar_carro(request)
 
-    carro = Carro_informe(request)
-    for p in publicadores:
-        carro.agregar(p)
-        print(p)
+        carro = Carro_informe(request)
+        for p in publicadores:
+            carro.agregar(p)
+            print(p)
+
     return render(request, 'nuevo_informe.html',{'grupo':grupo} )
 
 def guardar_informe_grupo(request, id):
