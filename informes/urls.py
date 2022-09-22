@@ -21,7 +21,9 @@ urlpatterns = [
     path('', index, name="index"),
     path('nuevo_informe/<int:id>/', nuevo_informe , name="nuevo_informe"),
     path('guardar_informe_publicador/<int:id>/', guardar_informe_grupo , name="guardar_informe_publicador"),   
-    path('finalizar_informe/', finalizar_informe , name="finalizar_informe"), 
+    path('finalizar_informe/<int:id>/', finalizar_informe , name="finalizar_informe"), 
     path('cancelar_informe/', cancelar_informe, name="cancelar_informe"), 
     path('informe_actual/', Crear_Informe_Actual, name="informe_actual"), 
+    path('informes/', InformeMensualList.as_view(), name="informes_mensuales_list"), 
+    path('informes_publicador/<int:id>/', lista_informes_publicador, name="informes_publicador"), 
 ]

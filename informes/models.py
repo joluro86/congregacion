@@ -1,26 +1,49 @@
 from django.db import models
 
-from admin_congregacion.models import Publicador
+from admin_congregacion.models import Grupo, Publicador
 
-estado= [('1','Abierto'),('0','Cerrado')]
-meses = [('1', 'Enero'),('2','Febrero'),('3','Marzo'),('4','Abril'),('5','Mayo'),('6','Junio'),('7','Julio'),('8','Agosto'),('9','Septiembre'),('10','Octubre'),('11','Noviembre')]
-años = [('1', '2022'),('2','2023'),('3','2024'),('5','2025')]
+meses = [('Enero', 'Enero'),('Febrero','Febrero'),('Marzo','Marzo'),('Abril','Abril'),('Mayo','Mayo'),('Junio','Junio'),('Julio','Julio'),('Agosto','Agosto'),('Septiembre','Septiembre'),('Octubre','Octubre'),('Noviembre','Noviembre'),('Diciembre','Diciembre')]
+
+class Año(models.Model):
+    nombre= models.CharField('Año', max_length=30)
+
+    class Meta:
+        db_table = 'Años'
+        managed = True
+        verbose_name = "Años"
+        verbose_name_plural = "Años"
+        ordering= ['id']
+    
+    def __str__(self):
+        return str(self.nombre)
+
+class EstadoInforme(models.Model):
+    estado= models.CharField('Estado', max_length=30)
+    class Meta:
+        db_table = 'estados'
+        managed = True
+        verbose_name = "Estados Informes Mensuales"
+        verbose_name_plural = "Estados Informes Mensuales"
+        ordering= ['id']
+    
+    def __str__(self):
+        return str(self.estado)
 
 class InformeMensual(models.Model):
     mes = models.CharField('Mes', choices=meses,max_length=100)
-    año = models.CharField('Año',choices=años,max_length=100)
-    estado = models.CharField('Estado', choices=estado, max_length=100)
+    año = models.ForeignKey(Año, on_delete=models.CASCADE)
+    estado = models.ForeignKey(EstadoInforme, on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'Informe_mensual'
         managed = True
         verbose_name = "Informe Mensual"
         verbose_name_plural = "Informe Mensual"
-        ordering= ['id']
+        ordering= ['-id']
         
 
     def __str__(self):
-        return str(str(self.mes))
+        return str(str(self.mes) + " " + str(self.año))
     
 class InformePublicador(models.Model):
     informe_mensual = models.ForeignKey(InformeMensual, on_delete=models.CASCADE)
@@ -31,9 +54,8 @@ class InformePublicador(models.Model):
     revisitas = models.IntegerField(null=True, blank=True)
     cursos = models.IntegerField(null=True, blank=True)
     observaciones = models.CharField(null=True, blank=True, max_length=200)
-    estado = models.CharField('Estado', choices=estado, max_length=100, default='Abierto')    
+    estado = models.ForeignKey(EstadoInforme, on_delete=models.CASCADE)    
     
-
     class Meta:
         verbose_name = "Informe Publicador"
         verbose_name_plural = "Informes Publicador"
@@ -41,3 +63,9 @@ class InformePublicador(models.Model):
     def __str__(self):
         return str(self.informe_mensual.mes + ' - ' + self.informe_mensual.año)
 
+class PivoteInformeMensualGrupo(models.Model):
+    grupo= models.ForeignKey(Grupo, on_delete=models.CASCADE)
+    informe_mensual = models.ForeignKey(InformeMensual, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str('Grupo ' + str(self.grupo.numero) + ' - ' + str(self.informe_mensual))

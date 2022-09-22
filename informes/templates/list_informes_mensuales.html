@@ -1,0 +1,24 @@
+{% extends "index.html" %}
+{% block content %}
+<div class="contenedor_informe">
+    <div class="informe">
+        <h1>Historial de Informes</h1>
+        <table id="table_id" class="display tabla_informes table table-sm table-hover tabla_informes_grupo">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Mes - Año</th>
+                    <th scope="col">Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in object_list %}
+                <tr>
+                    <td><a href="#" class="link_informes-grupo link-items">{{i.mes}} - {{i.año}}</a></td>
+                    <td>{{i.estado}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

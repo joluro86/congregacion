@@ -170,3 +170,7 @@
     background-color: #f1bc31 !important;
     border: none;
 }
+
+.tr_guardar_informe{
+    background-color: red !important;
+}

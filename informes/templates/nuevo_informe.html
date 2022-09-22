@@ -2,7 +2,7 @@
 {% block content %}
 <div class="contenedor_informe">
     <div class="informe">
-        <h1>Informes - Grupo {{grupo.numero}} - {{grupo.superintendente}}</h1>
+        <h1>Informe {{informe_mensual.mes}} - {{informe_mensual.año}} - Grupo {{grupo.numero}} - {{grupo.superintendente}}</h1>
         <table id="table_id" class="display tabla_informes table table-sm table-hover tabla_informes_grupo">
             <thead class="thead-dark">
                 <tr>
@@ -20,26 +20,28 @@
                 {% for key, value in request.session.carro.items %}
 
                 {% if key != "grupo" %}
-                <tr>
+                <tr style="font-size:0.8em !important; height: 30px !important;">
                     <form action="{% url 'guardar_informe_publicador' grupo.numero %}" method="POST">
                         {% csrf_token %}
+                        
                         <input type="hidden" name="id" value="{{ value.id }}">
                         <input type="hidden" name="grupo" value="{{ grupo.numero }}">
-                        <td class="nombre_pub">{{ value.nombre }}</td>
+
+                        <td class="nombre_pub" >{{ value.nombre }}</td>
                         <input type="hidden" name="nombre" value="{{value.nombre }}">
-                        <td><input type="number" class="form-control input_informe" name="pub"
+                        <td><input style="height: 20px !important;" type="number" class="form-control input_informe" name="pub"
                                 value="{{ value.publicaciones }}"></td>
-                        <td><input type="number" class="form-control input_informe" name="vid"
+                        <td><input style="height: 20px !important;" type="number" class="form-control input_informe" name="vid"
                                 value="{{ value.videos }}"></td>
-                        <td><input type="number" class="form-control input_informe" name="hor"
+                        <td><input style="height: 20px !important;" type="number" class="form-control input_informe" name="hor"
                                 value="{{ value.horas }}"></td>
-                        <td><input type="number" class="form-control input_informe" name="rev"
+                        <td><input style="height: 20px !important;" type="number" class="form-control input_informe" name="rev"
                                 value="{{ value.revisitas }}"></td>
-                        <td><input type="number" class="form-control input_informe" name="cur"
+                        <td><input style="height: 20px !important;" type="number" class="form-control input_informe" name="cur"
                                 value="{{ value.cursos }}"></td>
-                        <td><input type="text" class="form-control input_informe_observaciones" name="obs"
+                        <td><input style="height: 20px !important;" type="text" class="form-control input_informe_observaciones" name="obs"
                                 value="{{ value.observaciones }}"></td>
-                        <td><button style="height: 25px;" type="submit" class="btn btn-sm"><i
+                        <td><button style="height: 20px;" type="submit" class="btn btn-sm"><i
                                     class="fa-regular fa-floppy-disk" style="padding: 0%;margin-top: 0%;"></i></button>
                         </td>
                     </form>
@@ -49,8 +51,8 @@
             </tbody>
 
         </table>
-        <div class="d-grid gap-2 botones" style="text-align:center;">
-            <a href="{% url 'finalizar_informe' %}" class="btn btn-secondary btn-sm text-white finalizar_informe" type="button">Finalizar informe de grupo</a>
+        <div class="d-grid gap-2 botones" style="text-align:center; margin-bottom: 30px;">
+            <a href="{% url 'finalizar_informe' grupo.numero %}" class="btn btn-secondary btn-sm text-white finalizar_informe" type="button">Finalizar informe de grupo</a>
             <a href="{% url 'cancelar_informe' %}" class="btn btn-outline-secondary btn-sm cancelar_informe" type="button">Cancelar</a>
         </div>
     </div>

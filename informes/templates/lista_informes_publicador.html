@@ -1,0 +1,34 @@
+{% extends "index.html" %}
+{% block content %}
+<div class="contenedor_informe">
+    <div class="informe">
+        <h1>Informes de {{publicador}}</h1>
+        <table id="table_id" class="display tabla_informes table table-sm table-hover tabla_informes_grupo">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Mes - Año</th>
+                    <th scope="col">Publicaciones</th>
+                    <th scope="col">Videos</th>
+                    <th scope="col">Horas</th>
+                    <th scope="col">Revisitas</th>
+                    <th scope="col">Cursos</th>
+                    <th scope="col">Observaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in informes %}
+                <tr>
+                    <td>{{i.informe_mensual.mes}} - {{i.informe_mensual.año}}</td>
+                    <td>{{i.publicaciones}}</td>
+                    <td>{{i.videos}}</td>
+                    <td>{{i.horas}}</td>
+                    <td>{{i.revisitas}}</td>
+                    <td>{{i.cursos}}</td>
+                    <td>{{i.observaciones}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}
