@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from admin_congregacion.models import Grupo, Publicador
@@ -162,7 +163,53 @@ def lista_informes_publicador(request, id):
         messages.warning(request, 'Publicador no tiene informes registrados.')
         return redirect('grupos')
 
+def busqueda_informe_mensual(request, id):
     
+    try:
+        request.session['informe_mensual']={}
+        request.session.modified=True
+
+        informe_mensual=InformeMensual.objects.get(id=id)
+        request.session['informe_mensual']= informe_mensual.id
+
+        informes = InformePublicador.objects.filter(informe_mensual=informe_mensual)
+    except:
+        informes={}
+
+    grupos = Grupo.objects.all()
+
+    context = {
+        'informes':informes,
+        'grupos':grupos,
+        'informe_mensual':informe_mensual
+        }
+
+    return render(request, 'historico.html', context)
+
+def busqueda_informe_mensual_id_grupo(request, id):
+    
+    try:
+        informe_mensual = InformeMensual.objects.get(id=request.session['informe_mensual'])
+        grupo = Grupo.objects.get(numero=id)
+        publicadores = Publicador.objects.filter(grupo=grupo)
+        informes=[]
+        for p in publicadores:
+            print(p)
+            informes.append(InformePublicador.objects.get(publicador=p))
+    except:
+        print("errrorrrrr")
+        informes = {}
+
+    grupos = Grupo.objects.all()
+
+    context = {
+        'informes':informes,
+        'grupos':grupos,
+        'informe_mensual':informe_mensual
+        }
+
+    return render(request, 'historico.html', context)
+
     
 
 

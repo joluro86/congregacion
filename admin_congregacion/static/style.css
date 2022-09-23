@@ -13,12 +13,40 @@
     border-radius: 2px;
 }
 
+.contenedor_grupos_historico{
+    display: flex;
+    flex-direction: row;
+    width: 1200px;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: solid 0.5px rgb(192, 192, 192);
+    border-radius: 2px;
+}
 .contenedor_grupos .grupos{
     background-color: rgb(224, 224, 224);
     width: 250px;
     padding: 45px 10px 10px 10px;
     border-right: solid 0.5px rgb(192, 192, 192);
     border-bottom: solid 0.5px rgb(192, 192, 192);
+}
+
+.contenedor_grupos_historico .grupos_historico{
+    background-color: rgb(224, 224, 224);
+    width: 250px;
+    padding: 45px 10px 10px 10px;
+    border-right: solid 0.5px rgb(192, 192, 192);
+    border-bottom: solid 0.5px rgb(192, 192, 192);
+}
+
+.contenedor_grupos_historico .grupos_historico a{
+    padding: 0.5em;
+    font-size: 0.6em;
+    font-weight: 500;
+    color: #4d4d4d;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 1 !important;
 }
 
 .contenedor_grupos .grupos a{
@@ -30,6 +58,7 @@
     letter-spacing: 2px;
     opacity: 1 !important;
 }
+
 
 .contenedor_grupos .grupos span{
     padding: 0.5em;
@@ -45,13 +74,51 @@
     background-color: #f1bc31;
     color: aliceblue;
 }
+
+.contenedor_grupos .grupos a:hover{
+    background-color: #f1bc31;
+    color: aliceblue;
+}
+
+.contenedor_grupos_historico .grupos_historico a:hover{
+    background-color: #f1bc31;
+    color: aliceblue;
+}
+
 .contenedor_grupos .publicadores{
     background-color: rgb(224, 224, 224);
     width: 750px;
     padding-bottom: 15px;
 }
 
+.contenedor_grupos_historico .publicadores_historico{
+    background-color: rgb(224, 224, 224);
+    width: 950px;
+    padding-bottom: 15px;
+}
+.contenedor_grupos_historico .grupos_historico span{
+    padding: 0.5em;
+    font-size: 0.6em;
+    font-weight: 500;
+    color: #4d4d4d;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 1 !important;
+}
+
 .contenedor_grupos .publicadores h1{
+    margin: 8px;
+    text-align: center;
+    font-size: .8em;
+    font-weight: 500;
+    color: #4d4d4d;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 1 !important;
+    border-bottom: solid 0.3px rgb(192, 192, 192);
+}
+
+.contenedor_grupos_historico .publicadores_historico h1{
     margin: 8px;
     text-align: center;
     font-size: .8em;
@@ -173,4 +240,27 @@
 
 .tr_guardar_informe{
     background-color: red !important;
+}
+
+.asteriskField {
+    display: none;
+}
+
+.crear_publicador .form-group{
+    margin: 0px !important;
+}
+
+.crear_publicador .form-group{
+    margin: 0px !important;
+}
+.crear_publicador label{
+    margin: 2px 0px 0px 0px !important;
+}
+
+.crear_publicador input{
+    height: 30px !important;
+}
+
+.crear_publicador select{
+    height: 30px !important;
 }

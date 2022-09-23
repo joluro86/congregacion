@@ -6,6 +6,13 @@ from informes.models import *
 
 # Register your models here.
 
+class PivoteResource(resources.ModelResource):
+    class Meta:
+        model = PivoteInformeMensualGrupo
+
+class PivoteAdmin(admin.ModelAdmin):
+    list_display = ('id', 'grupo', 'informe_mensual')
+
 class AñoResource(resources.ModelResource):
     class Meta:
         model = Año
@@ -35,5 +42,6 @@ class InformePublicadorAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 admin.site.register(InformePublicador, InformePublicadorAdmin)
 admin.site.register(Año, AñoAdmin)
 admin.site.register(EstadoInforme, EstadoInformeAdmin)
+admin.site.register(PivoteInformeMensualGrupo, PivoteAdmin)
 
 

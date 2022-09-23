@@ -22,5 +22,6 @@ urlpatterns = [
     path('', include('informes.urls')),
     path('admin/', admin.site.urls),
     path('publicadores/<int:id>/', publicadores_por_grupo, name="publicadores_por_grupo"),
-    path('grupos/', grupos, name="grupos")
+    path('grupos/', grupos, name="grupos"),
+    path('nuevo_publicador/', Crear_Publicador.as_view(), name="nuevo_publicador")
 ]

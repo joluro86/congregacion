@@ -61,11 +61,14 @@ class InformePublicador(models.Model):
         verbose_name_plural = "Informes Publicador"
 
     def __str__(self):
-        return str(self.informe_mensual.mes + ' - ' + self.informe_mensual.año)
+        return str(str(self.informe_mensual.mes) + ' - ' + str(self.informe_mensual.año))
 
 class PivoteInformeMensualGrupo(models.Model):
     grupo= models.ForeignKey(Grupo, on_delete=models.CASCADE)
     informe_mensual = models.ForeignKey(InformeMensual, on_delete=models.CASCADE)
+
+    def informes_grupo(grupo):
+        return InformePublicador.objects.filter(grupo=grupo)
 
     def __str__(self):
         return str('Grupo ' + str(self.grupo.numero) + ' - ' + str(self.informe_mensual))

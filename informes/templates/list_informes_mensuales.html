@@ -13,7 +13,7 @@
             <tbody>
                 {% for i in object_list %}
                 <tr>
-                    <td><a href="#" class="link_informes-grupo link-items">{{i.mes}} - {{i.año}}</a></td>
+                    <td><a href="{% url 'busqueda_informe_mensual' i.id %}" class="link_informes-grupo link-items">{{i.mes}} - {{i.año}}</a></td>
                     <td>{{i.estado}}</td>
                 </tr>
                 {% endfor %}
