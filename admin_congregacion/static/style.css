@@ -264,3 +264,7 @@
 .crear_publicador select{
     height: 30px !important;
 }
+
+.informe_mensual {
+    width: 600px !important;
+}

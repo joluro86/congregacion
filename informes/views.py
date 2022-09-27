@@ -210,6 +210,16 @@ def busqueda_informe_mensual_id_grupo(request, id):
 
     return render(request, 'historico.html', context)
 
+def cerrar_informe_mensual(request, id):
+    
+    try:
+        informe_mensual = InformeMensual.objects.get(id=request.session['informe_mensual'])
+        informe_mensual.estado = 'Cerrado'
+        informe_mensual.save()
+    except:
+        print("errrorrrrr")
+        
+    return redirect('informes_mensuales_list')
     
 
 
