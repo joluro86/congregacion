@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from admin_congregacion.models import Grupo, Publicador
+from admin_congregacion.models import Grupo, PivoteUserToSuperintendente, Publicador
 from informes.carro_informe_grupo import Carro_informe
 from informes.forms import InfomeMensualForm
 from informes.models import EstadoInforme, InformeMensual, InformePublicador, PivoteInformeMensualGrupo
@@ -13,6 +13,14 @@ def index(request):
 def Crear_Informe_Actual(request):
 
     if (request.method == 'POST'):
+        mes= request.POST.get('mes')
+        año= request.POST.get('año')
+
+        if validar_existencia_informe(mes, año):
+            formset = InfomeMensualForm(request.POST)
+            messages.warning(request, 'Informe ya existe.')
+            return render(request, 'informe_Actual.html', {'form': formset})     
+
         informes_abiertos= InformeMensual.objects.filter(estado='1')
         if len(informes_abiertos)==0:
             formset = InfomeMensualForm(request.POST)
@@ -26,6 +34,11 @@ def Crear_Informe_Actual(request):
     formset = InfomeMensualForm()
     return render(request, 'informe_Actual.html', {'form': formset})
 
+def validar_existencia_informe(mes, año):
+    validar_informe = InformeMensual.objects.filter(mes=mes).filter(año=año)
+    if len(validar_informe)>0:
+        return True
+
 def validar_pivote_informe_grupo(grupo, mes):
     informes = PivoteInformeMensualGrupo.objects.filter(grupo=grupo).filter(informe_mensual=mes)
     if len(informes)>0:
@@ -33,54 +46,66 @@ def validar_pivote_informe_grupo(grupo, mes):
     
 def nuevo_informe(request, id):
     try:
-        informes_abiertos= InformeMensual.objects.filter(estado='1')
-        grupo= Grupo.objects.get(numero=id)
+        if request.user.is_authenticated:
+            user = request.user
+            pivote = PivoteUserToSuperintendente.objects.get(user=user)
 
-        if len(Publicador.objects.filter(grupo=grupo))<1:
-            print("sin publicadores" + str(id))
-            messages.warning(request, 'Registre publicadores en este grupo para enviar informes.')
-            return redirect('publicadores_por_grupo', id)
+            if (str(id) == str(pivote.grupo.numero)) or user.is_staff:
 
-        for i in informes_abiertos:
-            inf_mes= i
-        
-        try:
-            if validar_pivote_informe_grupo(grupo, inf_mes):
-                messages.warning(request, 'El informe de este grupo ya fue ingresado.')
-                return redirect('publicadores_por_grupo', id)
-        except:
-            pass
+                informes_abiertos= InformeMensual.objects.filter(estado='1')
+                grupo= Grupo.objects.get(numero=id)
 
-        if len(informes_abiertos)==0:       
-            messages.warning(request, 'No existen informes pendientes. Comuniquese con el administrador.')
-            return redirect('grupos')
-        elif len(informes_abiertos)>1:
-            messages.warning(request, 'Existe mas de un informe pendiente. Habilite solo uno.')
-            return redirect('grupos')
-        else:
-            publicadores = Publicador.objects.filter(grupo=grupo) 
-            if len(publicadores)<1:
-                messages.warning(request, 'Debe registrar publicadores en este grupo.')
-                return redirect('grupos')
-            try:
-                grupo_informe= request.session.get('grupo')
-                print("entre try")
-            except:
-                print("entre except")
-                grupo_informe= request.session.get('grupo', '0')
-            finally:
+                if len(Publicador.objects.filter(grupo=grupo))<1:
+                    print("sin publicadores" + str(id))
+                    messages.warning(request, 'Registre publicadores en este grupo para enviar informes.')
+                    return redirect('publicadores_por_grupo', id)
+
+                for i in informes_abiertos:
+                    inf_mes= i
                 
-                if str(grupo_informe) != str(id):
-                    limpiar_carro(request)
+                try:
+                    if validar_pivote_informe_grupo(grupo, inf_mes):
+                        messages.warning(request, 'El informe de este grupo ya fue ingresado.')
+                        return redirect('publicadores_por_grupo', id)
+                except:
+                    pass
 
-            carro = Carro_informe(request)
-            for p in publicadores:
-                carro.agregar(p)
+                if len(informes_abiertos)==0:       
+                    messages.warning(request, 'No existen informes pendientes. Comuniquese con el administrador.')
+                    return redirect('grupos')
+                elif len(informes_abiertos)>1:
+                    messages.warning(request, 'Existe mas de un informe pendiente. Habilite solo uno.')
+                    return redirect('grupos')
+                else:
+                    publicadores = Publicador.objects.filter(grupo=grupo) 
+                    if len(publicadores)<1:
+                        messages.warning(request, 'Debe registrar publicadores en este grupo.')
+                        return redirect('grupos')
+                    try:
+                        grupo_informe= request.session.get('grupo')
+                        print("entre try")
+                    except:
+                        print("entre except")
+                        grupo_informe= request.session.get('grupo', '0')
+                    finally:
+                        
+                        if str(grupo_informe) != str(id):
+                            limpiar_carro(request)
 
-        for i in informes_abiertos:
-            inf_mes= i
+                    carro = Carro_informe(request)
+                    for p in publicadores:
+                        carro.agregar(p)
+            else:
+                messages.warning(request, 'No tiene permisos para registrar este informe.')
+                return redirect('grupos')
 
-        return render(request, 'nuevo_informe.html', {'grupo':grupo, 'informe_mensual': inf_mes})
+            for i in informes_abiertos:
+                inf_mes= i
+
+            return render(request, 'nuevo_informe.html', {'grupo':grupo, 'informe_mensual': inf_mes})
+        else:
+            messages.warning(request, 'No tiene permiso para esta función.')
+            return redirect('grupos')
     except:
         messages.warning(request, 'Error en la busqueda.')
         return redirect('grupos')

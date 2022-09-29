@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'admin_congregacion',
     'informes',
+    'User',
     'import_export',
     'crispy_forms',
 ]
@@ -139,4 +140,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-LOGOUT_REDIRECT_URL = reverse_lazy('login') 
+LOGIN_REDIRECT_URL = "/"

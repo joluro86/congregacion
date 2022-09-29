@@ -20,6 +20,7 @@ from admin_congregacion.views import *
 
 urlpatterns = [
     path('', include('informes.urls')),
+    path('', include('User.urls')),
     path('admin/', admin.site.urls),
     path('publicadores/<int:id>/', publicadores_por_grupo, name="publicadores_por_grupo"),
     path('grupos/', grupos, name="grupos"),

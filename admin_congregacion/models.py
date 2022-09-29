@@ -1,6 +1,6 @@
 from django.db import models
 from admin_congregacion import choices
-
+from django.contrib.auth.models import User
 # Create your models here.
 
 class Congregacion(models.Model):
@@ -57,6 +57,18 @@ class Grupo(models.Model):
         verbose_name = 'Grupo de congregación'
         verbose_name_plural = 'Grupos de congregación'
         ordering = ['numero']
+
+class PivoteUserToSuperintendente(models.Model):
+    user = models.ForeignKey(User, on_delete = models.CASCADE)
+    superintendente = models.ForeignKey(Superintendente, on_delete = models.CASCADE)
+    grupo = models.ForeignKey(Grupo, on_delete = models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Relación Usuario a Super'
+        verbose_name_plural = 'Relación Usuario a Super'
+
+    def __str__(self):
+       return str(self.user)
         
 class EstadoPublicador(models.Model):    
     estado = models.CharField(verbose_name='Estado', max_length=200)

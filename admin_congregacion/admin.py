@@ -3,9 +3,16 @@ from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 from admin_congregacion.models import *
 
+class PivoteUserToSuperintendenteResource(resources.ModelResource):
+    class Meta:
+        model = PivoteUserToSuperintendente
+
 class PublicadorResource(resources.ModelResource):
     class Meta:
         model = Publicador
+
+class PivoteUserToSuperintendenteAdmin(admin.ModelAdmin):
+    list_display = ('superintendente', 'grupo', 'user')
 
 class CongregacionAdmin(admin.ModelAdmin):
     list_display = ('numero', 'nombre', 'municipio')
@@ -34,5 +41,7 @@ admin.site.register(Precursorado, PrecursoradoAdmin)
 class PublicadorAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('id', 'nombre', 'grupo', 'tipo', 'sexo', 'precursor', 'estado')
 admin.site.register(Publicador, PublicadorAdmin)
+
+admin.site.register(PivoteUserToSuperintendente, PivoteUserToSuperintendenteAdmin)
 
 
