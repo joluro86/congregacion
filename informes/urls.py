@@ -28,5 +28,4 @@ urlpatterns = [
     path('informes_publicador/<int:id>/', lista_informes_publicador, name="informes_publicador"), 
     path('busqueda_informe_mensual/<int:id>/', busqueda_informe_mensual, name="busqueda_informe_mensual"), 
     path('busqueda_informe_mensual_grupo/<int:id>/', busqueda_informe_mensual_id_grupo, name="busqueda_informe_mensual_id_grupo"), 
-    path('cerrar_informe_mensual/<int:id>/', cerrar_informe_mensual, name="cerrar_informe_mensual"), 
 ]

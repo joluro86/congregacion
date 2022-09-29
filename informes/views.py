@@ -32,55 +32,58 @@ def validar_pivote_informe_grupo(grupo, mes):
         return True
     
 def nuevo_informe(request, id):
-
-    informes_abiertos= InformeMensual.objects.filter(estado='1')
-    grupo= Grupo.objects.get(numero=id)
-
-    if len(Publicador.objects.filter(grupo=grupo))<1:
-        print("sin publicadores" + str(id))
-        messages.warning(request, 'Registre publicadores en este grupo para enviar informes.')
-        return redirect('publicadores_por_grupo', id)
-
-    for i in informes_abiertos:
-        inf_mes= i
-    
     try:
-        if validar_pivote_informe_grupo(grupo, inf_mes):
-            messages.warning(request, 'El informe de este grupo ya fue ingresado.')
+        informes_abiertos= InformeMensual.objects.filter(estado='1')
+        grupo= Grupo.objects.get(numero=id)
+
+        if len(Publicador.objects.filter(grupo=grupo))<1:
+            print("sin publicadores" + str(id))
+            messages.warning(request, 'Registre publicadores en este grupo para enviar informes.')
             return redirect('publicadores_por_grupo', id)
-    except:
-        pass
 
-    if len(informes_abiertos)==0:       
-        messages.warning(request, 'No existen informes pendientes. Comuniquese con el administrador.')
-        return redirect('grupos')
-    elif len(informes_abiertos)>1:
-        messages.warning(request, 'Existe mas de un informe pendiente. Habilite solo uno.')
-        return redirect('grupos')
-    else:
-        publicadores = Publicador.objects.filter(grupo=grupo) 
-        if len(publicadores)<1:
-            messages.warning(request, 'Debe registrar publicadores en este grupo.')
-            return redirect('grupos')
+        for i in informes_abiertos:
+            inf_mes= i
+        
         try:
-            grupo_informe= request.session.get('grupo')
-            print("entre try")
+            if validar_pivote_informe_grupo(grupo, inf_mes):
+                messages.warning(request, 'El informe de este grupo ya fue ingresado.')
+                return redirect('publicadores_por_grupo', id)
         except:
-            print("entre except")
-            grupo_informe= request.session.get('grupo', '0')
-        finally:
-            
-            if str(grupo_informe) != str(id):
-                limpiar_carro(request)
+            pass
 
-        carro = Carro_informe(request)
-        for p in publicadores:
-            carro.agregar(p)
+        if len(informes_abiertos)==0:       
+            messages.warning(request, 'No existen informes pendientes. Comuniquese con el administrador.')
+            return redirect('grupos')
+        elif len(informes_abiertos)>1:
+            messages.warning(request, 'Existe mas de un informe pendiente. Habilite solo uno.')
+            return redirect('grupos')
+        else:
+            publicadores = Publicador.objects.filter(grupo=grupo) 
+            if len(publicadores)<1:
+                messages.warning(request, 'Debe registrar publicadores en este grupo.')
+                return redirect('grupos')
+            try:
+                grupo_informe= request.session.get('grupo')
+                print("entre try")
+            except:
+                print("entre except")
+                grupo_informe= request.session.get('grupo', '0')
+            finally:
+                
+                if str(grupo_informe) != str(id):
+                    limpiar_carro(request)
 
-    for i in informes_abiertos:
-        inf_mes= i
+            carro = Carro_informe(request)
+            for p in publicadores:
+                carro.agregar(p)
 
-    return render(request, 'nuevo_informe.html', {'grupo':grupo, 'informe_mensual': inf_mes})
+        for i in informes_abiertos:
+            inf_mes= i
+
+        return render(request, 'nuevo_informe.html', {'grupo':grupo, 'informe_mensual': inf_mes})
+    except:
+        messages.warning(request, 'Error en la busqueda.')
+        return redirect('grupos')
 
 def guardar_informe_grupo(request, id):
     if request.method == "POST":
@@ -232,16 +235,6 @@ def busqueda_informe_mensual_id_grupo(request, id):
 
     return render(request, 'historico.html', context)
 
-def cerrar_informe_mensual(request, id):
-    
-    try:
-        informe_mensual = InformeMensual.objects.get(id=request.session['informe_mensual'])
-        informe_mensual.estado = 'Cerrado'
-        informe_mensual.save()
-    except:
-        print("errrorrrrr")
-        
-    return redirect('informes_mensuales_list')
     
 
 
