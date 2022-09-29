@@ -191,13 +191,16 @@ def busqueda_informe_mensual_id_grupo(request, id):
     try:
         informe_mensual = InformeMensual.objects.get(id=request.session['informe_mensual'])
         grupo = Grupo.objects.get(numero=id)
+        
         publicadores = Publicador.objects.filter(grupo=grupo)
         informes=[]
         for p in publicadores:
             print(p)
-            informes.append(InformePublicador.objects.get(publicador=p))
+            infor = InformePublicador.objects.filter(publicador=p).filter(informe_mensual=informe_mensual)
+            for i in infor:
+                informes.append(i)
     except:
-        print("errrorrrrr")
+        print("error busqueda grupo")
         informes = {}
 
     grupos = Grupo.objects.all()
