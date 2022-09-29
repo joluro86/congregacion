@@ -165,16 +165,25 @@ def lista_informes_publicador(request, id):
 
 def busqueda_informe_mensual(request, id):
     
-    try:
+    try:     
+        informe_mensual=InformeMensual.objects.get(id=id)
         request.session['informe_mensual']={}
         request.session.modified=True
-
-        informe_mensual=InformeMensual.objects.get(id=id)
         request.session['informe_mensual']= informe_mensual.id
 
         informes = InformePublicador.objects.filter(informe_mensual=informe_mensual)
     except:
         informes={}
+        messages.warning(request, 'Error al buscar informes.')
+        grupos = Grupo.objects.all()
+
+        context = {
+            'informes':informes,
+            'grupos':grupos,
+            'informe_mensual':None
+            }
+
+        return render(request, 'historico.html', context)
 
     grupos = Grupo.objects.all()
 
@@ -200,8 +209,18 @@ def busqueda_informe_mensual_id_grupo(request, id):
             for i in infor:
                 informes.append(i)
     except:
-        print("error busqueda grupo")
-        informes = {}
+        informes={}
+        messages.warning(request, 'Error al buscar informes.')
+        grupos = Grupo.objects.all()
+
+        context = {
+            'informes':informes,
+            'grupos':grupos,
+            'informe_mensual':informe_mensual
+            }
+
+        return render(request, 'historico.html', context)
+        
 
     grupos = Grupo.objects.all()
 
