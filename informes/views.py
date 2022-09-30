@@ -83,9 +83,7 @@ def nuevo_informe(request, id):
                         return redirect('grupos')
                     try:
                         grupo_informe= request.session.get('grupo')
-                        print("entre try")
                     except:
-                        print("entre except")
                         grupo_informe= request.session.get('grupo', '0')
                     finally:
                         
@@ -126,7 +124,6 @@ def guardar_informe_grupo(request, id):
     return redirect('nuevo_informe', id=id)
 
 def finalizar_informe(request, id):
-
     try:
         mes_informe = InformeMensual.objects.all()
         mes=''
@@ -135,10 +132,27 @@ def finalizar_informe(request, id):
             if str(m.estado)=='Abierto':
                 mes= m   
 
-        for key, value in request.session.get("carro").items():   
+        for key, value in request.session.get("carro").items(): 
+
+            if (str(value['horas'])=="0" or str(value['horas'])=="") and str(value['observaciones'])=="":
+                messages.warning(request, 'El informe no pudo ser creado. Si un publicador no informa horas debe ingresar la observación.')
+                return redirect('nuevo_informe', id=id)
+            
+            
+
+
             inf = InformePublicador()
             inf.informe_mensual = mes
             inf.publicador = Publicador.objects.get(id=value['id']) 
+
+            if int(value['cursos'])>0 and int(value['revisitas'])<1:
+                messages.warning(request, 'El informe no pudo ser creado. ' + str(inf.publicador)+' informó cursos biblicos sin revisitas.')
+                return redirect('nuevo_informe', id=id)
+            
+            if int(value['cursos']) > int(value['revisitas']):
+                messages.warning(request, 'El informe no pudo ser creado. ' + str(inf.publicador)+' informó mas cursos biblicos que revisitas.')
+                return redirect('nuevo_informe', id=id)
+
             inf.publicaciones = value['publicaciones']
             inf.videos = value['videos']
             inf.horas = value['horas']

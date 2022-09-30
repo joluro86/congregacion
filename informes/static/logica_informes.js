@@ -2,24 +2,21 @@ $(document).ready(function () {
     $('#tabla_informes_grupo').DataTable();
 });
 
-function guardar_informe_grupo(){
-    console.log("aqui")    
-    $.fn.dataTable.ext.buttons.sendTable = {
-        text: "Send Table to Server",
-        action: function ( e, dt, button, config ) {
-            var table = dt.rows().data().toArray();
-            $.ajax({
-                type: "POST",
-                url: "/guardar_informe_grupo",
-                data: {
-                    table: JSON.stringify(table)
-                },
-                success: function () {
-                    alert("llegué")
-                }
-            });
+function confirmar_informe(numero_grupo) {
+    Swal.fire({
+        title: '¿Esta seguro?',
+        text: "No podrá revertir esta acción!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Guardar!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "/finalizar_informe/" + numero_grupo + "/";
         }
-    };
+    })
 }
 
 

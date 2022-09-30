@@ -12,7 +12,6 @@ class Crear_Publicador(CreateView):
     form_class = PublicadorForm
     success_url = '/clientes/lista_clientes/'
 
-
 def publicadores_por_grupo(request, id):
     try:
         grupos= Grupo.objects.all()
@@ -26,7 +25,6 @@ def publicadores_por_grupo(request, id):
         messages.warning(request, 'Error en la busqueda.')
         grupos= Grupo.objects.all()
         return render(request, 'grupos.html', {'grupos':grupos} )
-
 
 def grupos(request):
     grupos= Grupo.objects.all()
