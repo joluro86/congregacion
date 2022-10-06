@@ -1,5 +1,5 @@
 from django.db import models
-from admin_congregacion import choices
+from .choices import sexo as choices
 from django.contrib.auth.models import User
 # Create your models here.
 
@@ -108,5 +108,16 @@ class Publicador(models.Model):
 
     def __str__(self):
         return self.nombre
+
+class PublicadorInactivo(models.Model):
+    publicador = models.ForeignKey(Publicador, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Publicadores inactivos"
+        verbose_name_plural = "Publicadores inactivos"
+        ordering = ['id']
+
+    def __str__(self):
+        return str(self.publicador.nombre)
 
 

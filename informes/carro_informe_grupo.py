@@ -1,5 +1,3 @@
-from decimal import Decimal
-import json
 from django.shortcuts import redirect, render
 
 class Carro_informe:

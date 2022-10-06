@@ -35,8 +35,6 @@ class PublicadorAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('id', 'nombre', 'grupo', 'tipo', 'sexo', 'precursor', 'estado')
 admin.site.register(Publicador, PublicadorAdmin)
 
-class PublicadorInactivoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'publicador')
-admin.site.register(Publicador, PublicadorInactivoAdmin)
+
 
 

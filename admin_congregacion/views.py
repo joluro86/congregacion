@@ -1,9 +1,8 @@
-from urllib import request
 from django.shortcuts import render
 from admin_congregacion.forms import PublicadorForm
 from admin_congregacion.models import *
 from informes.views import limpiar_carro
-from django.views.generic import ListView, CreateView
+from django.views.generic import CreateView
 from django.contrib import messages
 
 class Crear_Publicador(CreateView):

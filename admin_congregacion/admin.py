@@ -11,6 +11,10 @@ class PublicadorResource(resources.ModelResource):
     class Meta:
         model = Publicador
 
+class PublicadorInactivoResource(resources.ModelResource):
+    class Meta:
+        model = PublicadorInactivo
+
 class PivoteUserToSuperintendenteAdmin(admin.ModelAdmin):
     list_display = ('superintendente', 'grupo', 'user')
 
@@ -43,5 +47,11 @@ class PublicadorAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 admin.site.register(Publicador, PublicadorAdmin)
 
 admin.site.register(PivoteUserToSuperintendente, PivoteUserToSuperintendenteAdmin)
+
+class PublicadorInactivoAdmin(admin.ModelAdmin):
+    list_display = ('id', 'publicador')
+admin.site.register(PublicadorInactivo, PublicadorInactivoAdmin)
+
+
 
 

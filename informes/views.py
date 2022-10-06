@@ -3,7 +3,7 @@ from django.contrib import messages
 from admin_congregacion.models import Grupo, PivoteUserToSuperintendente, Publicador
 from informes.carro_informe_grupo import Carro_informe
 from informes.forms import InfomeMensualForm
-from informes.models import EstadoInforme, InformeMensual, InformePublicador, PivoteInformeMensualGrupo
+from informes.models import  UltimoInforme, EstadoInforme, InformeMensual, InformePublicador, PivoteInformeMensualGrupo
 from django.views.generic import ListView
 
 def index(request):
@@ -25,6 +25,9 @@ def Crear_Informe_Actual(request):
             formset = InfomeMensualForm(request.POST)
             if formset.is_valid():
                 formset.save()
+                ultimoinforme= UltimoInforme()
+                ultimoinforme.informe = formset
+                ultimoinforme.save()
         else:
             formset = InfomeMensualForm(request.POST)
             messages.warning(

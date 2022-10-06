@@ -73,3 +73,12 @@ class PivoteInformeMensualGrupo(models.Model):
     def __str__(self):
         return str('Grupo ' + str(self.grupo.numero) + ' - ' + str(self.informe_mensual))
 
+class UltimoInforme(models.Model):
+    informe = models.ForeignKey(InformeMensual, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Último informe"
+        verbose_name_plural = "Último informe"
+
+    def __str__(self):
+        return str(self.informe.informe_mensual)

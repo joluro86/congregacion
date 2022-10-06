@@ -1,5 +1,4 @@
 from django.db import models
-
 from admin_congregacion.models import Publicador
 
 estado= [('1','Abierto'),('0','Cerrado')]
@@ -18,7 +17,6 @@ class InformeMensual(models.Model):
         verbose_name_plural = "Informes Mensuales"
         ordering= ['id']
         
-
     def __str__(self):
         return 'Mes: ' + str(self.mes) + ' ' + str(self.año)
     
@@ -33,11 +31,20 @@ class InformePublicador(models.Model):
     observaciones = models.IntegerField(null=True, blank=True)
     estado = models.CharField('Estado', choices=estado, max_length=100)    
     
-
     class Meta:
         verbose_name = "Informe Publicador"
         verbose_name_plural = "Informes Publicador"
 
     def __str__(self):
         return self.informe_mensual
+
+class UltimoInforme(models.Model):
+    informe = models.ForeignKey(InformeMensual, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Último informe"
+        verbose_name_plural = "Último informe"
+
+    def __str__(self):
+        return str(self.informe.informe_mensual)
 
