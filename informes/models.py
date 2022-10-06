@@ -72,3 +72,4 @@ class PivoteInformeMensualGrupo(models.Model):
 
     def __str__(self):
         return str('Grupo ' + str(self.grupo.numero) + ' - ' + str(self.informe_mensual))
+
