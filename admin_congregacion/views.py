@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from admin_congregacion.forms import PublicadorForm
 from admin_congregacion.models import *
+from informes.models import InformePublicador
 from informes.views import limpiar_carro
 from django.views.generic import CreateView
 from django.contrib import messages
@@ -30,3 +31,23 @@ def grupos(request):
     limpiar_carro(request)
     return render(request, 'grupos.html', {'grupos':grupos})
 
+def publicadores_inactivos(request):
+    publicadores = Publicador.objects.all()
+
+    for p in publicadores:
+        calculo_publicador_inactivo(request, p)
+
+    publicadores_inactivos = PublicadorInactivo.objects.all()
+    context = {
+        'publicadores_inactivos': publicadores_inactivos
+    }
+    return render(request, 'inactivos.html', context)
+
+def calculo_publicador_inactivo(request, publicador):
+    try:
+        informes_publicador = InformePublicador.objects.filter(publicador=publicador)
+        for i in informes_publicador:
+            if str(i.horas)=='0':
+                print('Publicador: ' + str(i.publicador) + ' horas: ' + str(i.horas))
+    except:
+        pass

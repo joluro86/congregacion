@@ -1,5 +1,5 @@
 from django.db import models
-from .choices import sexo as choices
+from admin_congregacion import choices 
 from django.contrib.auth.models import User
 # Create your models here.
 

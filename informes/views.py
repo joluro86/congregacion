@@ -25,9 +25,8 @@ def Crear_Informe_Actual(request):
             formset = InfomeMensualForm(request.POST)
             if formset.is_valid():
                 formset.save()
-                ultimoinforme= UltimoInforme()
-                ultimoinforme.informe = formset
-                ultimoinforme.save()
+                calculo_ultimo_informe()
+                
         else:
             formset = InfomeMensualForm(request.POST)
             messages.warning(
@@ -36,6 +35,18 @@ def Crear_Informe_Actual(request):
 
     formset = InfomeMensualForm()
     return render(request, 'informe_Actual.html', {'form': formset})
+
+def calculo_ultimo_informe():
+    try:
+        informes_abiertos = InformeMensual.objects.filter(estado='1')
+        if len(informes_abiertos) == 1:
+            for i in informes_abiertos:
+                UltimoInforme.objects.all().delete()
+                ultimoinforme = UltimoInforme()
+                ultimoinforme.informe = i
+                ultimoinforme.save()
+    except:
+        pass
 
 def validar_existencia_informe(mes, año):
     validar_informe = InformeMensual.objects.filter(mes=mes).filter(año=año)
