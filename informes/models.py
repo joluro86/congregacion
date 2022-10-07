@@ -81,4 +81,4 @@ class UltimoInforme(models.Model):
         verbose_name_plural = "Último informe"
 
     def __str__(self):
-        return str(self.informe.informe_mensual)    
+        return str(self.informe)   

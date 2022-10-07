@@ -34,6 +34,8 @@ def grupos(request):
 def publicadores_inactivos(request):
     publicadores = Publicador.objects.all()
 
+    PublicadorInactivo.objects.all().delete()
+    
     for p in publicadores:
         calculo_publicador_inactivo(request, p)
 
@@ -45,9 +47,15 @@ def publicadores_inactivos(request):
 
 def calculo_publicador_inactivo(request, publicador):
     try:
-        informes_publicador = InformePublicador.objects.filter(publicador=publicador)
+        informes_publicador = InformePublicador.objects.filter(publicador=publicador).order_by('-id')[0:6]
+        cont=0
         for i in informes_publicador:
             if str(i.horas)=='0':
-                print('Publicador: ' + str(i.publicador) + ' horas: ' + str(i.horas))
+                cont+=1  
+                print(cont)          
+            if cont==6:
+                inactivo = PublicadorInactivo()
+                inactivo.publicador = i.publicador
+                inactivo.save()     
     except:
-        pass
+        print("error")
