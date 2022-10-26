@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 
 from admin_congregacion.models import Grupo, Publicador
@@ -54,7 +55,7 @@ class InformePublicador(models.Model):
     revisitas = models.IntegerField(null=True, blank=True)
     cursos = models.IntegerField(null=True, blank=True)
     observaciones = models.CharField(null=True, blank=True, max_length=200)
-    estado = models.ForeignKey(EstadoInforme, on_delete=models.CASCADE)    
+    estado = models.CharField(default='1', max_length=200)    
     
     class Meta:
         verbose_name = "Informe Publicador"

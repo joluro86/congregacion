@@ -180,7 +180,8 @@ def finalizar_informe(request, id):
             inf.revisitas = value['revisitas']
             inf.cursos = value['cursos']
             inf.observaciones = value['observaciones']
-            inf.estado = EstadoInforme.objects.get(estado='Abierto')
+            if int(value['horas'])<=0:
+                inf.estado = '0'
             inf.save()
 
         pivote_informe_grupo = PivoteInformeMensualGrupo()

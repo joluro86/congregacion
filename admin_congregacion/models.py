@@ -110,6 +110,7 @@ class Publicador(models.Model):
         return self.nombre
 
 class PublicadorInactivo(models.Model):
+    
     publicador = models.ForeignKey(Publicador, on_delete=models.CASCADE)
 
     class Meta:

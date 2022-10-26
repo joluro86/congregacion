@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from admin_congregacion.forms import PublicadorForm
 from admin_congregacion.models import *
-from informes.models import InformePublicador
+from informes.models import EstadoInforme, InformeMensual, InformePublicador
 from informes.views import limpiar_carro
 from django.views.generic import CreateView
 from django.contrib import messages
+import collections
 
 class Crear_Publicador(CreateView):
     #login_url = 'login'
@@ -31,31 +32,47 @@ def grupos(request):
     limpiar_carro(request)
     return render(request, 'grupos.html', {'grupos':grupos})
 
-def publicadores_inactivos(request):
-    publicadores = Publicador.objects.all()
+def calculo_inactivos(request):
 
     PublicadorInactivo.objects.all().delete()
-    
-    for p in publicadores:
-        calculo_publicador_inactivo(request, p)
+    calculo_publicador_inactivo()
 
-    publicadores_inactivos = PublicadorInactivo.objects.all()
     context = {
-        'publicadores_inactivos': publicadores_inactivos
+        'publicadores_inactivos': PublicadorInactivo.objects.all()
     }
+
     return render(request, 'inactivos.html', context)
 
-def calculo_publicador_inactivo(request, publicador):
+def calculo_publicador_inactivo():
     try:
-        informes_publicador = InformePublicador.objects.filter(publicador=publicador).order_by('-id')[0:6]
+        ultimos_seis_informes = InformeMensual.objects.filter(estado=EstadoInforme.objects.get(estado='Cerrado')).order_by('-id')[:6]
+        publicadores = Publicador.objects.all()        
         cont=0
-        for i in informes_publicador:
-            if str(i.horas)=='0':
-                cont+=1  
-                print(cont)          
-            if cont==6:
-                inactivo = PublicadorInactivo()
-                inactivo.publicador = i.publicador
-                inactivo.save()     
+        posibles_inactivos=[]
+
+        for u in ultimos_seis_informes:
+            informes_publicadores = InformePublicador.objects.filter(informe_mensual=u).filter(estado='0')
+            for p in informes_publicadores:
+                posibles_inactivos.append(p.publicador)
+        
+        for pub in posibles_inactivos:
+            if collections.Counter(posibles_inactivos)[pub]==6:
+                if existencia_inactivo(pub)==False:
+                    publi = PublicadorInactivo()
+                    publi.publicador=pub
+                    publi.save()        
     except:
         print("error")
+
+def existencia_inactivo(publicador):
+    if PublicadorInactivo.objects.filter(publicador=publicador):
+        return True
+    else:
+        return False
+
+def publicadores_inactivos(request):
+    context = {
+        'publicadores_inactivos': PublicadorInactivo.objects.all()
+    }
+
+    return render(request, 'inactivos.html', context)
