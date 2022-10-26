@@ -10,6 +10,7 @@ urlpatterns = [
     path('informe_actual/', Crear_Informe_Actual, name="informe_actual"), 
     path('informes/', InformeMensualList.as_view(), name="informes_mensuales_list"), 
     path('informes_publicador/<int:id>/', lista_informes_publicador, name="informes_publicador"), 
+    path('cambiar_estado_informe/<int:id>/<int:grupo>/<int:estado>/', cambiar_estado_informe, name="cambiar_estado_informe"),
     path('busqueda_informe_mensual/<int:id>/', busqueda_informe_mensual, name="busqueda_informe_mensual"), 
     path('busqueda_informe_mensual_grupo/<int:id>/', busqueda_informe_mensual_id_grupo, name="busqueda_informe_mensual_id_grupo"), 
 ]

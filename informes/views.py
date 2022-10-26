@@ -298,3 +298,14 @@ def busqueda_informe_mensual_id_grupo(request, id):
     }
 
     return render(request, 'historico.html', context)
+
+def cambiar_estado_informe(request, id, grupo, estado):
+    for key, value in request.session.get("carro").items():
+        
+        if str(id) == str(value['id']):
+            carro_informe = Carro_informe(request)
+            carro_informe.cambiar_estado_informe(id, estado)
+            print("nuevo estado: " + str(estado))
+            print('viejo: ' + str(value['estado']))
+
+    return redirect('nuevo_informe', id=grupo)

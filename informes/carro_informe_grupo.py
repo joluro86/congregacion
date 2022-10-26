@@ -24,6 +24,7 @@ class Carro_informe:
                 'revisitas':0,
                 'revistas':0,
                 'cursos':0,
+                'estado':0,
                 'observaciones':"",
             }
         self.guardar_carro()
@@ -64,6 +65,14 @@ class Carro_informe:
                     value['revisitas']=r
                     value['cursos']=c
                     value['observaciones']=o
+                    break
+        self.guardar_carro()
+    
+    def cambiar_estado_informe(self, id, estado):
+    
+        for key, value in self.carro.items():
+                if key==str(id):
+                    value['estado']=estado
                     break
         self.guardar_carro()
     

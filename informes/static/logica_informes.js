@@ -20,3 +20,30 @@ function confirmar_informe(numero_grupo) {
 }
 
 
+function on(checkbox) {
+    id = checkbox.value;
+    grupo = document.getElementById('grupo').value
+    estado = '1'
+    window.location.href = "/cambiar_estado_informe/" + id + "/" + grupo + "/" + estado + "/";
+}
+
+function off(checkbox) {
+    id = checkbox.value;
+    grupo = document.getElementById('grupo').value
+    estado = '0'
+    window.location.href = "/cambiar_estado_informe/" + id + "/" + grupo + "/" + estado + "/";
+}
+
+function funcion_cambio_estado(id){
+estado= 'estado'+id;
+var checkbox = document.getElementById(estado);
+checkbox.addEventListener("change", comprueba, false);
+
+function comprueba() {
+    if (checkbox.checked) {
+        on(checkbox);
+    } else {
+        off(checkbox);
+    }
+}
+}
