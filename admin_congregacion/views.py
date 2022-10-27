@@ -6,6 +6,7 @@ from informes.views import limpiar_carro
 from django.views.generic import CreateView
 from django.contrib import messages
 import collections
+from django.contrib.auth.decorators import login_required
 
 class Crear_Publicador(CreateView):
     #login_url = 'login'
@@ -32,8 +33,8 @@ def grupos(request):
     limpiar_carro(request)
     return render(request, 'grupos.html', {'grupos':grupos})
 
+@login_required
 def calculo_inactivos(request):
-
     PublicadorInactivo.objects.all().delete()
     calculo_publicador_inactivo()
 
@@ -70,9 +71,9 @@ def existencia_inactivo(publicador):
     else:
         return False
 
+@login_required
 def publicadores_inactivos(request):
     context = {
         'publicadores_inactivos': PublicadorInactivo.objects.all()
     }
-
     return render(request, 'inactivos.html', context)

@@ -24,13 +24,6 @@
 		<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 			<div class="container">
 				<a class="navbar-brand" href="#">Oeste <span>congregación</span></a>
-				<form action="#" class="searchform order-sm-start order-lg-last">
-					<div class="form-group d-flex">
-						<input type="text" class="form-control pl-3" placeholder="Buscar">
-						<button type="submit" placeholder="" class="form-control search"><span
-								class="fa fa-search"></span></button>
-					</div>
-				</form>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
 					aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="fa fa-bars"></span> Menú
@@ -54,7 +47,8 @@
 							<a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown"
 								aria-haspopup="true" aria-expanded="false">Publicadores</a>
 							<div class="dropdown-menu" aria-labelledby="dropdown04">
-								<a class="dropdown-item" href="{% url 'nuevo_publicador' %}">Registrar nuevo publicador</a>
+								<a class="dropdown-item" href="{% url 'nuevo_publicador' %}">Registrar nuevo
+									publicador</a>
 								<a class="dropdown-item" href="#">Listado actual</a>
 								<a class="dropdown-item" href="#">Irregulares</a>
 								<a class="dropdown-item" href="{% url 'publicadores_inactivos'  %}">Lista Inactivos</a>
@@ -63,7 +57,27 @@
 								<a class="dropdown-item" href="#">Siervos ministeriales</a>
 							</div>
 						</li>
-						<li class="nav-item"><a href="/admin" target="_blank" class="nav-link">Administrador</a></li>
+
+						<li class="nav-item dropdown">
+							{% if user.is_authenticated %}
+							<a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown"
+								aria-haspopup="true" aria-expanded="false">	
+									{{ user.get_username }}
+							</a>				
+							<div class="dropdown-menu" aria-labelledby="dropdown04">
+								<a class="dropdown-item" href="{% url 'logout'%}?next={{request.path}}">Salir</a>
+							{% else %}
+							<a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown"
+								aria-haspopup="true" aria-expanded="false">	
+									Usuario
+							</a>
+							<div class="dropdown-menu" aria-labelledby="dropdown04">
+								<a class="dropdown-item" href="{% url 'login'%}?next={{request.path}}">Iniciar
+									sesión</a>
+							{% endif %}
+							</div>
+						</li>
+
 					</ul>
 				</div>
 			</div>
@@ -77,11 +91,11 @@
 
 	{% endblock content %}
 
-	
+
 	{% block js %}
-		
+
 	{% endblock js %}
-		
+
 
 	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 	<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
@@ -89,7 +103,7 @@
 	<script src="{% static 'js/popper.js' %}"></script>
 	<script src="{% static 'js/bootstrap.min.js' %}"></script>
 	<script src="{% static 'js/main.js' %}"></script>
-	<script src="{% static 'logica_informes.js' %}" ></script>
+	<script src="{% static 'logica_informes.js' %}"></script>
 
 </body>
 
