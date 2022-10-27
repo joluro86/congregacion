@@ -104,7 +104,7 @@ class Publicador(models.Model):
     class Meta:
         verbose_name = "Publicador"
         verbose_name_plural = "Publicadores"
-        ordering = ['id']
+        ordering = ['nombre']
 
     def __str__(self):
         return self.nombre
@@ -117,6 +117,18 @@ class PublicadorInactivo(models.Model):
         verbose_name = "Publicadores inactivos"
         verbose_name_plural = "Publicadores inactivos"
         ordering = ['id']
+
+    def __str__(self):
+        return str(self.publicador.nombre)
+
+class PublicadorIrregular(models.Model):
+    
+    publicador = models.ForeignKey(Publicador, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Publicadores irregulares"
+        verbose_name_plural = "Publicadores irregulares"
+        ordering = ['publicador']
 
     def __str__(self):
         return str(self.publicador.nombre)

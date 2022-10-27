@@ -23,8 +23,11 @@ urlpatterns = [
     path('', include('User.urls')),
     path('admin/', admin.site.urls),
     path('publicadores/<int:id>/', publicadores_por_grupo, name="publicadores_por_grupo"),
+    path('publicadores_congregacion/', publicadores_congregacion, name='publicadores_congregacion'),
     path('calculo_inactivos/', calculo_inactivos, name="calculo_inactivos"),
     path('publicadores_inactivos/', publicadores_inactivos, name="publicadores_inactivos"),
+    path('calculo_irregulares/', calculo_irregulares, name="calculo_irregulares"),
+    path('publicadores_irregulares/', publicadores_irregulares, name="publicadores_irregulares"),
     path('grupos/', grupos, name="grupos"),
     path('nuevo_publicador/', Crear_Publicador.as_view(), name="nuevo_publicador"),
     path('accounts/', include('django.contrib.auth.urls'))

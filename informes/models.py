@@ -49,12 +49,12 @@ class InformeMensual(models.Model):
 class InformePublicador(models.Model):
     informe_mensual = models.ForeignKey(InformeMensual, on_delete=models.CASCADE)
     publicador = models.ForeignKey(Publicador, on_delete=models.CASCADE)
-    publicaciones = models.IntegerField(null=True, blank=True)
-    videos = models.IntegerField(null=True, blank=True)
+    publicaciones = models.IntegerField(null=True, blank=True, default='0')
+    videos = models.IntegerField(null=True, blank=True, default='0')
     horas = models.IntegerField(default=0)
-    revisitas = models.IntegerField(null=True, blank=True)
-    cursos = models.IntegerField(null=True, blank=True)
-    observaciones = models.CharField(null=True, blank=True, max_length=200)
+    revisitas = models.IntegerField(null=True, blank=True, default='0')
+    cursos = models.IntegerField(null=True, blank=True, default='0')
+    observaciones = models.CharField(null=True, blank=True, max_length=200, default='-')
     estado = models.CharField(default='1', max_length=200)    
     
     class Meta:
