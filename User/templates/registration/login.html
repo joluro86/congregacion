@@ -2,27 +2,38 @@
 
 {% block content %}
 
-  {% if user.is_authenticated %}
-    <p>Your account doesn't have access to this page. To proceed,
-      please login with an account that has access.</p>
-  {% else %}
-    <p>Please login to see this page.</p>
-  {% endif %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-5 mx-auto">
+      <div id="first">
+        <div class="myform form ">
+          <div class="logo mb-3">
+            <div class="col-md-12 text-center">
+              <h1>Login</h1>
+            </div>
+          </div>
 
-  <form method="post" action="{% url 'login' %}">
-    {% csrf_token %}
-    <div>
-      <td>{{ form.username.label_tag }}</td>
-      <td>{{ form.username }}</td>
+          <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="usuario">
+              <td>{{ form.username.label_tag }}</td>
+              <td class="form_usuario">{{ form.username }}</td>
+            </div>
+            <div>
+              <td>{{ form.password.label_tag }}</td>
+              <td class="password">{{ form.password }}</td>
+            </div>
+            <div>
+              <input type="submit" value="Iniciar sesión" />
+              <input type="hidden" name="next" value="{{ next }}" />
+            </div>
+          </form>
+
+        </div>
+      </div>
     </div>
-    <div>
-      <td>{{ form.password.label_tag }}</td>
-      <td>{{ form.password }}</td>
-    </div>
-    <div>
-      <input type="submit" value="login" />
-      <input type="hidden" name="next" value="{{ next }}" />
-    </div>
-  </form>
+  </div>
+</div>
+
 
 {% endblock %}

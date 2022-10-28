@@ -304,3 +304,19 @@
 .informe_mensual {
     width: 600px !important;
 }
+
+.container_login{
+    width:400px;
+    margin-top: 30px;
+}
+
+.usuario{
+    position: relative;
+    background-color: red;
+}
+
+.container_login .form_usuario{
+    position: absolute;
+    top:100px;
+    left:0;
+}

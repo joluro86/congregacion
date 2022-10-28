@@ -29,6 +29,7 @@ urlpatterns = [
     path('calculo_irregulares/', calculo_irregulares, name="calculo_irregulares"),
     path('publicadores_irregulares/', publicadores_irregulares, name="publicadores_irregulares"),
     path('grupos/', grupos, name="grupos"),
-    path('nuevo_publicador/', Crear_Publicador.as_view(), name="nuevo_publicador"),
+    path('ancianos/', ancianos, name="ancianos"),
+    path('ministeriales/', ministeriales, name="ministeriales"),
     path('accounts/', include('django.contrib.auth.urls'))
 ]

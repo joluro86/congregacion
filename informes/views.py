@@ -3,12 +3,16 @@ from django.contrib import messages
 from admin_congregacion.models import Grupo, PivoteUserToSuperintendente, Publicador
 from informes.carro_informe_grupo import Carro_informe
 from informes.forms import InfomeMensualForm
-from informes.models import  UltimoInforme, EstadoInforme, InformeMensual, InformePublicador, PivoteInformeMensualGrupo
+from informes.models import  UltimoInforme, InformeMensual, InformePublicador, PivoteInformeMensualGrupo
 from django.views.generic import ListView
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
+@login_required
 def index(request):
     return render(request, 'index.html')
 
+@login_required
 def Crear_Informe_Actual(request):
 
     if (request.method == 'POST'):
@@ -59,6 +63,7 @@ def validar_pivote_informe_grupo(grupo, mes):
     if len(informes) > 0:
         return True
 
+@login_required
 def nuevo_informe(request, id):
     try:
         if request.user.is_authenticated:
@@ -129,6 +134,7 @@ def nuevo_informe(request, id):
         messages.warning(request, 'Error en la busqueda.')
         return redirect('grupos')
 
+@login_required
 def guardar_informe_grupo(request, id):
     if request.method == "POST":
         id_publicador = request.POST.get("id")
@@ -144,6 +150,7 @@ def guardar_informe_grupo(request, id):
         request.session['grupo'] = request.POST.get("grupo")
     return redirect('nuevo_informe', id=id)
 
+@login_required
 def finalizar_informe(request, id):
     try:
         mes_informe = InformeMensual.objects.all()
@@ -206,11 +213,12 @@ def cancelar_informe(request):
     limpiar_carro(request)
     return redirect('grupos')
 
-class InformeMensualList(ListView):
+class InformeMensualList(LoginRequiredMixin, ListView):
     #login_url = 'login'
     model = InformeMensual
     template_name = "list_informes_mensuales.html"
 
+@login_required
 def lista_informes_publicador(request, id):
     try:
         publicador = Publicador.objects.get(id=id)
@@ -228,6 +236,7 @@ def lista_informes_publicador(request, id):
         messages.warning(request, 'Publicador no tiene informes registrados.')
         return redirect('grupos')
 
+@login_required
 def busqueda_informe_mensual(request, id):
 
     try:
@@ -261,6 +270,7 @@ def busqueda_informe_mensual(request, id):
 
     return render(request, 'historico.html', context)
 
+@login_required
 def busqueda_informe_mensual_id_grupo(request, id):
 
     try:
@@ -299,6 +309,7 @@ def busqueda_informe_mensual_id_grupo(request, id):
 
     return render(request, 'historico.html', context)
 
+@login_required
 def cambiar_estado_informe(request, id, grupo, estado):
     for key, value in request.session.get("carro").items():
         

@@ -9,6 +9,7 @@ from django.contrib import messages
 import collections
 from django.contrib.auth.decorators import login_required
 
+@login_required
 def publicadores_congregacion(request):
     context={
         'publicadores': Publicador.objects.all().order_by('nombre')
@@ -16,12 +17,7 @@ def publicadores_congregacion(request):
 
     return render(request, 'lista_publicadores_congregacion.html', context)
 
-class Crear_Publicador(CreateView):
-    #login_url = 'login'
-    template_name = 'create_publicador.html'
-    form_class = PublicadorForm
-    success_url = '/clientes/lista_clientes/'
-
+@login_required
 def publicadores_por_grupo(request, id):
     try:
         grupos= Grupo.objects.all()
@@ -36,6 +32,25 @@ def publicadores_por_grupo(request, id):
         grupos= Grupo.objects.all()
         return render(request, 'grupos.html', {'grupos':grupos} )
 
+@login_required
+def ancianos(request):
+
+    context={
+        'busqueda': 'Ancianos', 
+        'data': Publicador.objects.filter(tipo=3)
+    }
+    return render(request, 'ancianos_y_ministeriales.html', context)
+
+@login_required
+def ministeriales(request):
+
+    context={
+        'busqueda': 'Siervos Ministeriales', 
+        'data': Publicador.objects.filter(tipo=4)
+    }
+    return render(request, 'ancianos_y_ministeriales.html', context)
+
+@login_required
 def grupos(request):
     grupos= Grupo.objects.all()
     limpiar_carro(request)
