@@ -32,7 +32,6 @@
 					<ul class="navbar-nav m-auto">
 						<li class="nav-item active"><a href="/" class="nav-link">Inicio</a></li>
 						<li class="nav-item"><a href="{% url 'grupos' %}" class="nav-link">Grupos</a></li>
-						<li class="nav-item"><a href="/admin/" class="nav-link" target="_blank">Admin</a></li>
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown"
 								aria-haspopup="true" aria-expanded="false">Informes</a>
@@ -48,10 +47,12 @@
 							<a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown"
 								aria-haspopup="true" aria-expanded="false">Publicadores</a>
 							<div class="dropdown-menu" aria-labelledby="dropdown04">
-								<a class="dropdown-item" href="/admin/admin_congregacion/publicador/add/" target="_blank">Registrar nuevo
+								<a class="dropdown-item" href="/admin/admin_congregacion/publicador/add/"
+									target="_blank">Registrar nuevo
 									publicador</a>
 								<a class="dropdown-item" href="{% url 'publicadores_congregacion' %}">Listado actual</a>
-								<a class="dropdown-item" href="{% url 'publicadores_irregulares'  %}">Lista irregulares</a>
+								<a class="dropdown-item" href="{% url 'publicadores_irregulares'  %}">Lista
+									irregulares</a>
 								<a class="dropdown-item" href="{% url 'calculo_irregulares'  %}">Cálculo irregulares</a>
 								<a class="dropdown-item" href="{% url 'publicadores_inactivos'  %}">Lista inactivos</a>
 								<a class="dropdown-item" href="{% url 'calculo_inactivos'  %}">Cálculo Inactivos</a>
@@ -59,25 +60,26 @@
 								<a class="dropdown-item" href="{% url 'ministeriales' %}">Siervos ministeriales</a>
 							</div>
 						</li>
+						<li class="nav-item"><a href="/admin/" class="nav-link" target="_blank">Admin</a></li>
 
 						<li class="nav-item dropdown">
 							{% if user.is_authenticated %}
 							<a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown"
-								aria-haspopup="true" aria-expanded="false">	
-									{{ user.get_username }}
-							</a>				
-							<div class="dropdown-menu" aria-labelledby="dropdown04">
-								<a class="dropdown-item" href="{% url 'logout'%}?next={{request.path}}">Salir</a>
-							{% else %}
-							<a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown"
-								aria-haspopup="true" aria-expanded="false">	
-									Usuario
+								aria-haspopup="true" aria-expanded="false">
+								{{ user.get_username }}
 							</a>
 							<div class="dropdown-menu" aria-labelledby="dropdown04">
-								<a class="dropdown-item" href="{% url 'login'%}?next={{request.path}}">Iniciar
-									sesión</a>
-							{% endif %}
-							</div>
+								<a class="dropdown-item" href="{% url 'logout'%}?next={{request.path}}">Salir</a>
+								{% else %}
+								<a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown"
+									aria-haspopup="true" aria-expanded="false">
+									Usuario
+								</a>
+								<div class="dropdown-menu" aria-labelledby="dropdown04">
+									<a class="dropdown-item" href="{% url 'login'%}?next={{request.path}}">Iniciar
+										sesión</a>
+									{% endif %}
+								</div>
 						</li>
 
 					</ul>

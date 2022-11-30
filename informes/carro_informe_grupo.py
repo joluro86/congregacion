@@ -65,6 +65,12 @@ class Carro_informe:
                     value['revisitas']=r
                     value['cursos']=c
                     value['observaciones']=o
+
+                    try:
+                        if int(value['horas'])>0:
+                            value['estado']=1
+                    except:
+                        pass        
                     break
         self.guardar_carro()
     
@@ -72,7 +78,9 @@ class Carro_informe:
     
         for key, value in self.carro.items():
                 if key==str(id):
+                    print("estado: " + str(estado))
                     value['estado']=estado
+                    print(value['estado'])
                     break
         self.guardar_carro()
     
@@ -86,21 +94,6 @@ class Carro_informe:
         self.guardar_carro()
 
     
-    def actualizar_carro_dias(self, producto, dias):
-        for key, value in self.carro.items():
-            if str(value['id'])==str(producto.id):
-                value['dias_alquiler']=dias
-                value['subtotal']= float(value['cantidad']) * float(value['dias_alquiler']) * float(value['valor_dia'])
-                break
-        self.guardar_carro()
-
-    def cambiar_cantidad_dias(self, producto, cantidad):
-        for key, value in self.carro.items():
-                if key==str(producto.id):
-                    value['dias_alquiler']=cantidad
-                    value['subtotal']=  float(value['cantidad']) * float(value['dias_alquiler']) * float(value['valor_dia'])
-                    break
-        self.guardar_carro()
 
     
     def total_venta(self):

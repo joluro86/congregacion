@@ -44,18 +44,21 @@
                         <td><input style="height: 20px !important;" type="text"
                                 class="form-control input_informe_observaciones" name="obs"
                                 value="{{ value.observaciones }}"></td>
-                        
-                        {% if {{value.estado}} == '1' %}
-                        <td><input style="height: 20px !important;" type="checkbox"
-                            class="form-control" id="estado{{ value.id }}" name="estado" value="{{ value.id }}" checked onclick="funcion_cambio_estado('{{value.id}}')"></td>
+
+                        {% if value.estado == 1 %}
+
+                        <td><input style="height: 20px !important;" type="checkbox" class="form-control"
+                                id="estado{{ value.id }}" name="estado" value="{{ value.id }}" checked
+                                onclick="funcion_cambio_estado('{{value.id}}')"></td>
                         {% else %}
-                        <td><input style="height: 20px !important;" type="checkbox"
-                            class="form-control" id="estado{{ value.id }}" name="estado" value="{{ value.id }}" onclick="funcion_cambio_estado('{{value.id}}')"></td>
-                    
+
+                        <td><input style="height: 20px !important;" type="checkbox" class="form-control"
+                                id="estado{{ value.id }}" name="estado" value="{{ value.id }}"
+                                onclick="funcion_cambio_estado('{{value.id}}')"></td>
+
                         {% endif %}
-                            
-                        
-                                <td><button style="height: 20px;" type="submit" class="btn btn-sm"><i
+
+                        <td><button style="height: 20px;" type="submit" class="btn btn-sm"><i
                                     class="fa-regular fa-floppy-disk" style="padding: 0%;margin-top: 0%;"></i></button>
                         </td>
                     </form>

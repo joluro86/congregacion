@@ -68,6 +68,7 @@ def nuevo_informe(request, id):
     try:
         if request.user.is_authenticated:
             user = request.user
+            print(user)
             pivote = PivoteUserToSuperintendente.objects.get(user=user)
 
             if (str(id) == str(pivote.grupo.numero)) or user.is_staff:
@@ -130,8 +131,8 @@ def nuevo_informe(request, id):
         else:
             messages.warning(request, 'No tiene permiso para esta función.')
             return redirect('grupos')
-    except:
-        messages.warning(request, 'Error en la busqueda.')
+    except Exception as e:
+        messages.warning(request, 'Error en la busqueda.' + repr(e))
         return redirect('grupos')
 
 @login_required
@@ -141,6 +142,16 @@ def guardar_informe_grupo(request, id):
         p = request.POST.get("pub")
         v = request.POST.get("vid")
         h = request.POST.get("hor")
+        print("ache: " + str(h))
+        print(len(h))
+        try:
+            if len(h)<1:
+                h=0
+            if int(h)<=0:
+                h=0            
+        except:
+            pass
+
         r = request.POST.get("rev")
         c = request.POST.get("cur")
         o = request.POST.get("obs")
@@ -311,12 +322,7 @@ def busqueda_informe_mensual_id_grupo(request, id):
 
 @login_required
 def cambiar_estado_informe(request, id, grupo, estado):
-    for key, value in request.session.get("carro").items():
-        
-        if str(id) == str(value['id']):
-            carro_informe = Carro_informe(request)
-            carro_informe.cambiar_estado_informe(id, estado)
-            print("nuevo estado: " + str(estado))
-            print('viejo: ' + str(value['estado']))
-
+    carro_informe = Carro_informe(request)
+    carro_informe.cambiar_estado_informe(id, estado)
+            
     return redirect('nuevo_informe', id=grupo)
