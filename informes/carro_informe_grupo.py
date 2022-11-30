@@ -78,9 +78,12 @@ class Carro_informe:
     
         for key, value in self.carro.items():
                 if key==str(id):
-                    print("estado: " + str(estado))
                     value['estado']=estado
-                    print(value['estado'])
+                    if estado ==1:
+                        value['observaciones']='Informó.'
+                    if estado ==0:
+                        value['observaciones']=''
+                    
                     break
         self.guardar_carro()
     

@@ -142,8 +142,7 @@ def guardar_informe_grupo(request, id):
         p = request.POST.get("pub")
         v = request.POST.get("vid")
         h = request.POST.get("hor")
-        print("ache: " + str(h))
-        print(len(h))
+
         try:
             if len(h)<1:
                 h=0
@@ -185,6 +184,11 @@ def finalizar_informe(request, id):
             if int(value['cursos']) > 0 and int(value['revisitas']) < 1:
                 messages.warning(request, 'El informe no pudo ser creado. ' +
                                  str(inf.publicador)+' informó cursos biblicos sin revisitas.')
+                return redirect('nuevo_informe', id=id)
+            
+            if int(value['horas']) > 200:
+                messages.warning(request, 'El informe no pudo ser creado. ' +
+                                 str(inf.publicador)+' informó mas de 200 horas.')
                 return redirect('nuevo_informe', id=id)
 
             if int(value['cursos']) > int(value['revisitas']):
