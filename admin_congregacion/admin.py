@@ -15,6 +15,10 @@ class PublicadorInactivoResource(resources.ModelResource):
     class Meta:
         model = PublicadorInactivo
 
+class GrupoResource(resources.ModelResource):
+    class Meta:
+        model = Grupo
+
 class PublicadorIrregularResource(resources.ModelResource):
     class Meta:
         model = PublicadorIrregular
@@ -30,7 +34,7 @@ class SuperintendenteAdmin(admin.ModelAdmin):
     list_display = ('id','nombre',)
 admin.site.register(Superintendente, SuperintendenteAdmin)
 
-class GrupoAdmin(admin.ModelAdmin):
+class GrupoAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('numero', 'superintendente', 'congregacion')
 admin.site.register(Grupo, GrupoAdmin)
 
