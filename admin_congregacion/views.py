@@ -1,13 +1,11 @@
-from multiprocessing import context
 from django.shortcuts import render
-from admin_congregacion.forms import PublicadorForm
 from admin_congregacion.models import *
 from informes.models import EstadoInforme, InformeMensual, InformePublicador
 from informes.views import limpiar_carro
-from django.views.generic import CreateView
 from django.contrib import messages
 import collections
 from django.contrib.auth.decorators import login_required
+from django.db.models import F
 
 @login_required
 def publicadores_congregacion(request):
@@ -63,7 +61,7 @@ def calculo_inactivos(request):
     calculo_publicador_inactivo()
 
     context = {
-        'publicadores_inactivos': PublicadorInactivo.objects.all()
+        'publicadores_inactivos': PublicadorInactivo.objects.all().order_by(F('publicador__grupo').asc())
     }
 
     return render(request, 'inactivos.html', context)
@@ -102,7 +100,7 @@ def existencia_inactivo(publicador):
 @login_required
 def publicadores_inactivos(request):
     context = {
-        'publicadores_inactivos': PublicadorInactivo.objects.all()
+        'publicadores_inactivos': PublicadorInactivo.objects.all().order_by(F('publicador__grupo').asc())
     }
     return render(request, 'inactivos.html', context)
 
@@ -116,7 +114,7 @@ def calculo_irregulares(request):
     calculo_publicador_irregular()
 
     context = {
-        'publicadores_irregulares': PublicadorIrregular.objects.all()
+        'publicadores_irregulares': PublicadorIrregular.objects.all().order_by(F('publicador__grupo').asc())
     }
 
     return render(request, 'irregulares.html', context)
@@ -156,7 +154,7 @@ def existencia_irregular(publicador):
 @login_required
 def publicadores_irregulares(request):
     context = {
-        'publicadores_irregulares': PublicadorIrregular.objects.all()
+        'publicadores_irregulares': PublicadorIrregular.objects.all().order_by(F('publicador__grupo').asc())
     }
     return render(request, 'irregulares.html', context)
 

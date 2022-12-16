@@ -37,7 +37,7 @@ class InformePublicadorResource(resources.ModelResource):
     class Meta:
         model = InformePublicador
         
-class InformeMensualAdmin(admin.ModelAdmin):
+class InformeMensualAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('id', 'mes', 'año', 'estado')
 
 admin.site.register(InformeMensual, InformeMensualAdmin)

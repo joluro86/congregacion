@@ -30,13 +30,13 @@ class CongregacionAdmin(admin.ModelAdmin):
     list_display = ('numero', 'nombre', 'municipio')
 admin.site.register(Congregacion, CongregacionAdmin)
 
-class SuperintendenteAdmin(admin.ModelAdmin):
-    list_display = ('id','nombre',)
-admin.site.register(Superintendente, SuperintendenteAdmin)
-
 class GrupoAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('numero', 'superintendente', 'congregacion')
 admin.site.register(Grupo, GrupoAdmin)
+
+class SuperintendenteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('id', 'nombre')
+admin.site.register(Superintendente, SuperintendenteAdmin)
 
 class Tipo_publicadorAdmin(admin.ModelAdmin):
     list_display = ('id', 'tipo')
