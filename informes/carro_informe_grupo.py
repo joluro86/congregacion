@@ -12,6 +12,7 @@ class Carro_informe:
 
     def agregar(self, publicador, ):
         if(str(publicador.id) not in self.carro.keys()):
+            print("entre a agregar")
             self.carro[publicador.id]={
                 'grupo': publicador.grupo.numero,
                 'mes': 'agosto',
@@ -57,6 +58,7 @@ class Carro_informe:
     def cambiar_cantidad_informe(self, id, p, v, h, r, c, o):
     
         for key, value in self.carro.items():
+                print("entre a cambiar")
                 if key==str(id):
                     value['horas']=h
                     value['publicaciones']=p
@@ -69,21 +71,25 @@ class Carro_informe:
                     try:
                         if int(value['horas'])>0:
                             value['estado']=1
+                        if int(value['horas'])==0:
+                            value['estado']=0    
+                            value['observaciones']=''                    
                     except:
                         pass        
                     break
         self.guardar_carro()
     
     def cambiar_estado_informe(self, id, estado):
-    
+        
         for key, value in self.carro.items():
+                print("aqui voy " + str(id))
                 if key==str(id):
                     value['estado']=estado
                     if estado ==1:
                         value['observaciones']='Informó.'
                     if estado ==0:
                         value['observaciones']=''
-                    
+                    print("estado nuevo: " + str(value['estado']))
                     break
         self.guardar_carro()
     
@@ -128,7 +134,6 @@ class Carro_informe:
         self.guardar_carro()
 
     def limpiar_carro(self):
-        print("llegue")
         self.session["carro"]={}
         self.session.modified=True
 

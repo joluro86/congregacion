@@ -11,7 +11,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 @login_required
 def index(request):
-
     return render(request, 'index.html')
 
 
@@ -97,8 +96,8 @@ def nuevo_informe(request, id):
                         messages.warning(
                             request, 'El informe de este grupo ya fue ingresado.')
                         return redirect('publicadores_por_grupo', id)
-                except:
-                    pass
+                except Exception as e:
+                    print(e)
 
                 if len(informes_abiertos) == 0:
                     messages.warning(
@@ -116,15 +115,19 @@ def nuevo_informe(request, id):
                         return redirect('grupos')
                     try:
                         grupo_informe = request.session.get('grupo')
+                        print("grupo sin cero")
                     except:
                         grupo_informe = request.session.get('grupo', '0')
+                        print("grupo con cero")
                     finally:
+                        print("id grupo: " + str(grupo_informe) + " otro id: " + str(id))
 
                         if str(grupo_informe) != str(id):
                             limpiar_carro(request)
 
                     carro = Carro_informe(request)
                     for p in publicadores:
+                        print(p)
                         carro.agregar(p)
             else:
                 messages.warning(
@@ -166,6 +169,7 @@ def guardar_informe_grupo(request, id):
         carro_informe = Carro_informe(request)
         carro_informe.cambiar_cantidad_informe(id_publicador, p, v, h, r, c, o)
         request.session['grupo'] = request.POST.get("grupo")
+        print("aqui inici: " + str(request.session['grupo']))
     return redirect('nuevo_informe', id=id)
 
 
@@ -183,7 +187,7 @@ def finalizar_informe(request, id):
 
             if (str(value['horas']) == "0" or str(value['horas']) == "") and str(value['observaciones']) == "":
                 messages.warning(
-                    request, 'El informe no pudo ser creado. Si un publicador no informa horas debe ingresar la observación.')
+                    request, 'El informe no pudo ser creado. Si un publicador no informa horas debe ingresar la observación o marcarlo como activo.')
                 return redirect('nuevo_informe', id=id)
 
             inf = InformePublicador()
@@ -344,5 +348,7 @@ def busqueda_informe_mensual_id_grupo(request, id):
 def cambiar_estado_informe(request, id, grupo, estado):
     carro_informe = Carro_informe(request)
     carro_informe.cambiar_estado_informe(id, estado)
+    print("llegué " + str(grupo))
+    request.session['grupo'] = request.POST.get("grupo", grupo)
 
     return redirect('nuevo_informe', id=grupo)
