@@ -17,6 +17,7 @@
                 {% for p in publicadores_inactivos %}
                 <tr>
                     <td class="nombre_pub">{{ p }}</td>
+                    <td class="nombre_pub">{{ p.publicador.grupo }}</td>
                     <td><a class="acciones_pub" href="{% url 'informes_publicador' p.publicador.id %}" title="Informes"><i class="fa-solid fa-file-arrow-up"></i></a><span class="estado_pub">{{p.estado}}</span></td>
                 </tr>
                 {% endfor %}
