@@ -34,16 +34,16 @@ function off(checkbox) {
     window.location.href = "/cambiar_estado_informe/" + id + "/" + grupo + "/" + estado + "/";
 }
 
-function funcion_cambio_estado(id){
-estado= 'estado'+id;
-var checkbox = document.getElementById(estado);
-checkbox.addEventListener("change", comprueba, false);
+function funcion_cambio_estado(id) {
+    estado = 'estado' + id;
+    var checkbox = document.getElementById(estado);
+    checkbox.addEventListener("change", comprueba, false);
 
-function comprueba() {
-    if (checkbox.checked) {
-        on(checkbox);
-    } else {
-        off(checkbox);
+    function comprueba() {
+        if (checkbox.checked) {
+            on(checkbox);
+        } else {
+            off(checkbox);
+        }
     }
-}
 }

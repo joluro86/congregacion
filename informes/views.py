@@ -8,7 +8,6 @@ from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-
 @login_required
 def index(request):
     return render(request, 'index.html')
@@ -74,7 +73,6 @@ def nuevo_informe(request, id):
     try:
         if request.user.is_authenticated:
             user = request.user
-            print(user)
             pivote = PivoteUserToSuperintendente.objects.get(user=user)
 
             if (str(id) == str(pivote.grupo.numero)) or user.is_staff:
@@ -83,7 +81,6 @@ def nuevo_informe(request, id):
                 grupo = Grupo.objects.get(numero=id)
 
                 if len(Publicador.objects.filter(grupo=grupo)) < 1:
-                    print("sin publicadores" + str(id))
                     messages.warning(
                         request, 'Registre publicadores en este grupo para enviar informes.')
                     return redirect('publicadores_por_grupo', id)
@@ -115,19 +112,14 @@ def nuevo_informe(request, id):
                         return redirect('grupos')
                     try:
                         grupo_informe = request.session.get('grupo')
-                        print("grupo sin cero")
                     except:
                         grupo_informe = request.session.get('grupo', '0')
-                        print("grupo con cero")
                     finally:
-                        print("id grupo: " + str(grupo_informe) + " otro id: " + str(id))
-
                         if str(grupo_informe) != str(id):
                             limpiar_carro(request)
 
                     carro = Carro_informe(request)
                     for p in publicadores:
-                        print(p)
                         carro.agregar(p)
             else:
                 messages.warning(
@@ -169,7 +161,6 @@ def guardar_informe_grupo(request, id):
         carro_informe = Carro_informe(request)
         carro_informe.cambiar_cantidad_informe(id_publicador, p, v, h, r, c, o)
         request.session['grupo'] = request.POST.get("grupo")
-        print("aqui inici: " + str(request.session['grupo']))
     return redirect('nuevo_informe', id=id)
 
 
@@ -257,7 +248,6 @@ def lista_informes_publicador(request, id):
         informes = InformePublicador.objects.filter(publicador=publicador)
 
         if len(informes) < 1:
-            print(len(informes))
             messages.warning(
                 request, 'Publicador no tiene informes registrados.')
             return redirect('publicadores_por_grupo', publicador.grupo.numero)
@@ -315,7 +305,6 @@ def busqueda_informe_mensual_id_grupo(request, id):
         publicadores = Publicador.objects.filter(grupo=grupo)
         informes = []
         for p in publicadores:
-            print(p)
             infor = InformePublicador.objects.filter(
                 publicador=p).filter(informe_mensual=informe_mensual)
             for i in infor:
@@ -348,7 +337,6 @@ def busqueda_informe_mensual_id_grupo(request, id):
 def cambiar_estado_informe(request, id, grupo, estado):
     carro_informe = Carro_informe(request)
     carro_informe.cambiar_estado_informe(id, estado)
-    print("llegué " + str(grupo))
     request.session['grupo'] = request.POST.get("grupo", grupo)
 
     return redirect('nuevo_informe', id=grupo)
