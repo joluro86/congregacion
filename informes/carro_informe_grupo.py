@@ -64,6 +64,7 @@ class Carro_informe:
         self.guardar_carro()
 
     def cambiar_estado_informe(self, id, estado):
+        print("nuevo estado")
 
         for key, value in self.carro.items():
             if key == str(id):
@@ -72,7 +73,9 @@ class Carro_informe:
                     value['observaciones'] = 'Informó.'
                 if estado == 0:
                     value['observaciones'] = ''
+                print(value['estado'])
                 break
+                
         self.guardar_carro()
 
     def guardar_carro(self):
