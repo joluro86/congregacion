@@ -7,6 +7,7 @@ from informes.models import UltimoInforme, InformeMensual, InformePublicador, Pi
 from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Avg, Sum
 
 
 @login_required
@@ -281,10 +282,32 @@ def lista_informes_publicador(request, id):
                 request, 'Publicador no tiene informes registrados.')
             return redirect('publicadores_por_grupo', publicador.grupo.numero)
         else:
-            return render(request, 'lista_informes_publicador.html', {'informes': informes, 'publicador': publicador})
+            informes_seis_meses = InformePublicador.objects.filter(publicador=publicador).exclude(estado='0').order_by('-id')
+            data = {
+                'informes': informes, 
+                'publicador': publicador,
+                'total_pub': InformePublicador.objects.filter(publicador=publicador).aggregate(Sum('publicaciones'))['publicaciones__sum'],
+                'total_vid': InformePublicador.objects.filter(publicador=publicador).aggregate(Sum('videos'))['videos__sum'],
+                'total_horas': InformePublicador.objects.filter(publicador=publicador).aggregate(Sum('horas'))['horas__sum'],
+                'total_revisitas': InformePublicador.objects.filter(publicador=publicador).aggregate(Sum('revisitas'))['revisitas__sum'],
+                'total_cursos': InformePublicador.objects.filter(publicador=publicador).aggregate(Sum('cursos'))['cursos__sum'],
+                'prom_pub': InformePublicador.objects.filter(publicador=publicador).aggregate(Avg('publicaciones'))['publicaciones__avg'],
+                'prom_vid': InformePublicador.objects.filter(publicador=publicador).aggregate(Avg('videos'))['videos__avg'],
+                'prom_horas': InformePublicador.objects.filter(publicador=publicador).aggregate(Avg('horas'))['horas__avg'],
+                'prom_revisitas': InformePublicador.objects.filter(publicador=publicador).aggregate(Avg('revisitas'))['revisitas__avg'],
+                'prom_cursos': InformePublicador.objects.filter(publicador=publicador).aggregate(Avg('cursos'))['cursos__avg'],
 
-    except:
+                'prom_pub_seis': informes_seis_meses[:6].aggregate(Avg('publicaciones'))['publicaciones__avg'],
+                'prom_vid_seis': informes_seis_meses[:6].aggregate(Avg('videos'))['videos__avg'],
+                'prom_hor_seis': informes_seis_meses[:6].aggregate(Avg('horas'))['horas__avg'],
+                'prom_rev_seis': informes_seis_meses[:6].aggregate(Avg('revisitas'))['revisitas__avg'],
+                'prom_cur_seis': informes_seis_meses[:6].aggregate(Avg('cursos'))['cursos__avg'],
+                }
+            return render(request, 'lista_informes_publicador.html', data)
+
+    except Exception as e:
         messages.warning(request, 'Publicador no tiene informes registrados.')
+        print(e)
         return redirect('grupos')
 
 

@@ -26,6 +26,107 @@
                     <td>{{i.cursos}}</td>
                     <td>{{i.observaciones}}</td>
                 </tr>
+                <!--Totales-->
+                <tr class="font-weight-bold text-danger">
+                    <td>
+                        {% if forloop.last %}
+                        Total
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if forloop.last %}
+                        {{total_pub}}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if forloop.last %}
+                        {{total_vid}}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if forloop.last %}
+                        {{total_horas}}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if forloop.last %}
+                        {{total_revisitas}}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if forloop.last %}
+                        {{total_cursos}}
+                        {% endif %}
+                    </td>
+                </tr>
+                <!--Fin Totales-->
+
+                <!--Promedio-->
+                <tr class="font-weight-bold text-danger">
+                    <td>
+                        {% if forloop.last %}
+                        Promedio historico
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if forloop.last %}
+                        {{prom_pub|floatformat:2}}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if forloop.last %}
+                        {{prom_vid|floatformat:2}}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if forloop.last %}
+                        {{prom_horas|floatformat:2}}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if forloop.last %}
+                        {{prom_revisitas|floatformat:2}}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if forloop.last %}
+                        {{prom_cursos|floatformat:2}}
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr class="font-weight-bold text-danger">
+                    <td>
+                        {% if forloop.last %}
+                        Promedio seis meses
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if forloop.last %}
+                        {{prom_pub_seis|floatformat:2}}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if forloop.last %}
+                        {{prom_vid_seis|floatformat:2}}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if forloop.last %}
+                        {{prom_hor_seis|floatformat:2}}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if forloop.last %}
+                        {{prom_rev_seis|floatformat:2}}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if forloop.last %}
+                        {{prom_cur_seis|floatformat:2}}
+                        {% endif %}
+                    </td>
+                </tr>
+                <!--Fin Promedios-->
                 {% endfor %}
             </tbody>
         </table>
