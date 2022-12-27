@@ -282,7 +282,7 @@ def lista_informes_publicador(request, id):
                 request, 'Publicador no tiene informes registrados.')
             return redirect('publicadores_por_grupo', publicador.grupo.numero)
         else:
-            informes_seis_meses = InformePublicador.objects.filter(publicador=publicador).exclude(estado='0').order_by('-id')
+            informes_seis_meses = InformePublicador.objects.filter(publicador=publicador).order_by('-id')
             data = {
                 'informes': informes, 
                 'publicador': publicador,

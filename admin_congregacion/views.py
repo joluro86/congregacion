@@ -189,7 +189,6 @@ def calculo_irregulares(request):
 
 
 def calculo_publicador_irregular():
-    print("irregular aqui")
     try:
         ultimos_seis_informes = InformeMensual.objects.filter(
             estado=EstadoInforme.objects.get(estado='Cerrado')).order_by('-id')[:6]
@@ -198,12 +197,10 @@ def calculo_publicador_irregular():
         for u in ultimos_seis_informes:
             informes_publicadores = InformePublicador.objects.filter(
                 informe_mensual=u).filter(estado='0')
-            print(u)
             for p in informes_publicadores:
                 posibles_irregulares.append(p.publicador)
 
         for pub in posibles_irregulares:
-            print(pub)
             if collections.Counter(posibles_irregulares)[pub] < 6 and collections.Counter(posibles_irregulares)[pub] > 0:
                 if existencia_irregular(pub) == False:
                     publi = PublicadorIrregular()
