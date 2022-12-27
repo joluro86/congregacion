@@ -12,6 +12,7 @@
         <h1>Publicadores {% if publicadores_grupo %}-  Grupo {{grupo.numero}}. {{grupo.superintendente.nombre}}  {% endif %} </h1>
         {% if grupo %}
             <a class="btn-registrar-informe" href="{% url 'nuevo_informe' grupo.numero %}">Registrar Informe</a>
+            <span style="float: right; font-weight: bold; font-size: 0.8em; margin-right: 30px;">Total: {{total_publicadores}}</span>
         {% endif %}
         {% if messages %}
         <ul class="messages list-group text-center">

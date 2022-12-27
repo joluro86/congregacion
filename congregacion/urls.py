@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('publicadores/<int:id>/', publicadores_por_grupo, name="publicadores_por_grupo"),
     path('publicadores_congregacion/', publicadores_congregacion, name='publicadores_congregacion'),
+    path('vista_uno_a_uno/', publicadores_congregacion_uno_a_uno, name='unoauno'),
     path('calculo_inactivos/', calculo_inactivos, name="calculo_inactivos"),
     path('publicadores_inactivos/', publicadores_inactivos, name="publicadores_inactivos"),
     path('calculo_irregulares/', calculo_irregulares, name="calculo_irregulares"),
