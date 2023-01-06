@@ -1,14 +1,18 @@
 {% extends "index.html" %}
 
 {% block content %}
-<div class="contenedor_grupos_inactivos">    
+<div class="contenedor_grupos_inactivos">
     <div class="publicadores">
-        <h1>Publicadores</h1>
+        <div>
+            <button style="margin: 15px 10px 15px 15px;float: left; font-size: 0.8em; padding: 2px; font-weight: bold; background-color: #ffc107;" class="btn btn-secondary btn-sm"><i class="fa-solid fa-print"></i></button>
+            <h1 style="float:left; width: 80%; margin-top: 20px;">Publicadores - Total: {{total}}
+            </h1>
+        </div>
         {% if messages %}
         <ul class="messages list-group text-center">
             {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }} list-group-item" {% endif %}>{{ message }}</li>
-            {% endfor %}
+            <li{% if message.tags %} class="{{ message.tags }} list-group-item" {% endif %}>{{ message }}</li>
+                {% endfor %}
         </ul>
         {% endif %}
         {% if publicadores %}
@@ -17,23 +21,25 @@
                 {% for p in publicadores %}
                 <tr>
                     <td class="nombre_pub">{{ p }}</td>
-                    <td><a class="acciones_pub" href="{% url 'informes_publicador' p.id %}" title="Informes"><i class="fa-solid fa-file-arrow-up"></i></a>
+                    <td class="nombre_pub">{{ p.grupo }}</td>
+                    <td><a class="acciones_pub" href="{% url 'informes_publicador' p.id %}" title="Informes"><i
+                                class="fa-solid fa-file-arrow-up"></i></a>
                         <span class="estado_pub">
-                            
+
                             {% if p.estado.estado == 'Inactivo' %}
-                                <span class="text-danger font-weight-bold">{{p.estado}}</span>
+                            <span class="text-danger font-weight-bold">{{p.estado}}</span>
                             {% else %}
-                                {{p.estado}}
+                            {{p.estado}}
                             {% endif %}
-                                    
+
                         </span>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
-        </table>        
-        {% endif %} 
+        </table>
+        {% endif %}
     </div>
-    
+
 </div>
 {% endblock content %}

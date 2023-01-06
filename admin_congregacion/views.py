@@ -11,8 +11,10 @@ from django.core.paginator import Paginator
 
 @login_required
 def publicadores_congregacion(request):
-    context = {
-        'publicadores': Publicador.objects.all().order_by('nombre')
+    data = Publicador.objects.all()
+    context={
+        'publicadores': data.order_by('nombre'),
+        'total': data.count()
     }
 
     return render(request, 'lista_publicadores_congregacion.html', context)
