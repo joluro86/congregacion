@@ -9,8 +9,10 @@ from django.db.models import F
 
 @login_required
 def publicadores_congregacion(request):
+    data = Publicador.objects.all()
     context={
-        'publicadores': Publicador.objects.all().order_by('nombre')
+        'publicadores': data.order_by('nombre'),
+        'total': data.count()
     }
 
     return render(request, 'lista_publicadores_congregacion.html', context)
@@ -69,8 +71,6 @@ def calculo_inactivos(request):
 def calculo_publicador_inactivo():
     try:
         ultimos_seis_informes = InformeMensual.objects.filter(estado=EstadoInforme.objects.get(estado='Cerrado')).order_by('-id')[:6]
-        publicadores = Publicador.objects.all()        
-        cont=0
         posibles_inactivos=[]
 
         for u in ultimos_seis_informes:
