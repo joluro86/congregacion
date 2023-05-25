@@ -7,6 +7,8 @@ from informes.models import UltimoInforme, InformeMensual, InformePublicador, Pi
 from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Avg, Sum
+
 
 @login_required
 def index(request):
@@ -166,63 +168,92 @@ def guardar_informe_grupo(request, id):
 
 @login_required
 def finalizar_informe(request, id):
-    try:
-        mes_informe = InformeMensual.objects.all()
-        mes = ''
-        for m in mes_informe:
 
-            if str(m.estado) == 'Abierto':
-                mes = m
+    validar_errores_informe_a_guardar(request, id)
+    print(request.session['error_informes'])
+    
+    if request.session['error_informes'] == True:
+        return redirect('nuevo_informe', id)        
+    else:
+        try:
+            mes_informe = InformeMensual.objects.all()
+            mes = ''
+            for m in mes_informe:
+                if str(m.estado) == 'Abierto':
+                    mes = m
+            for key, value in request.session.get("carro").items():
+                print(value)
+                inf = InformePublicador()
+                inf.informe_mensual = mes
+                inf.publicador = Publicador.objects.get(id=value['id'])
+                inf.publicaciones = value['publicaciones']
+                inf.videos = value['videos']
+                inf.horas = value['horas']
+                inf.revisitas = value['revisitas']
+                inf.cursos = value['cursos']
+                inf.observaciones = value['observaciones']
+                inf.estado = value['estado']
+                inf.save()
 
-        for key, value in request.session.get("carro").items():
+            pivote_informe_grupo = PivoteInformeMensualGrupo()
+            pivote_informe_grupo.grupo = Grupo.objects.get(numero=id)
+            pivote_informe_grupo.informe_mensual = mes
+            pivote_informe_grupo.save()
 
-            if (str(value['horas']) == "0" or str(value['horas']) == "") and str(value['observaciones']) == "":
-                messages.warning(
-                    request, 'El informe no pudo ser creado. Si un publicador no informa horas debe ingresar la observación o marcarlo como activo.')
-                return redirect('nuevo_informe', id=id)
+            limpiar_carro(request)
 
-            inf = InformePublicador()
-            inf.informe_mensual = mes
-            inf.publicador = Publicador.objects.get(id=value['id'])
+            messages.warning(request, 'Informe guardado con existo.')
+            print("try")
 
-            if int(value['cursos']) > 0 and int(value['revisitas']) < 1:
-                messages.warning(request, 'El informe no pudo ser creado. ' +
-                                 str(inf.publicador)+' informó cursos biblicos sin revisitas.')
-                return redirect('nuevo_informe', id=id)
+        except Exception as e:
+            messages.warning(request, 'El informe no pudo ser creado.')
+            print(e)
+        print("else")
+        return redirect('publicadores_por_grupo', id)      
 
-            if int(value['horas']) > 200:
-                messages.warning(request, 'El informe no pudo ser creado. ' +
-                                 str(inf.publicador)+' informó mas de 200 horas.')
-                return redirect('nuevo_informe', id=id)
+def validar_errores_informe_a_guardar(request, id_grupo):
 
-            if int(value['cursos']) > int(value['revisitas']):
-                messages.warning(request, 'El informe no pudo ser creado. ' + str(
-                    inf.publicador)+' informó mas cursos biblicos que revisitas.')
-                return redirect('nuevo_informe', id=id)
+    request.session['error_informes'] = {}
+    request.session.modified = True
 
-            inf.publicaciones = value['publicaciones']
-            inf.videos = value['videos']
-            inf.horas = value['horas']
-            inf.revisitas = value['revisitas']
-            inf.cursos = value['cursos']
-            inf.observaciones = value['observaciones']
-            if int(value['horas']) <= 0:
-                inf.estado = '0'
-            inf.save()
+    mes_informe = InformeMensual.objects.all()
+    mes = ''
+    for m in mes_informe:
 
-        pivote_informe_grupo = PivoteInformeMensualGrupo()
-        pivote_informe_grupo.grupo = Grupo.objects.get(numero=id)
-        pivote_informe_grupo.informe_mensual = mes
-        pivote_informe_grupo.save()
+        if str(m.estado) == 'Abierto':
+            mes = m
 
-        limpiar_carro(request)
+    for key, value in request.session.get("carro").items():
 
-        messages.warning(request, 'Informe guardado con existo.')
+        if (str(value['horas']) == "0" or str(value['horas']) == "") and str(value['observaciones']) == "":
+            messages.warning(
+                request, 'El informe no pudo ser creado. Si un publicador no informa horas debe ingresar la observación o marcarlo como activo.')
+            request.session['error_informes'] = True
+            break
 
-    except:
-        messages.warning(request, 'El informe no pudo ser creado.')
+        inf = InformePublicador()
+        inf.informe_mensual = mes
+        inf.publicador = Publicador.objects.get(id=value['id'])
 
-    return redirect('publicadores_por_grupo', id)
+        if int(value['cursos']) > 0 and int(value['revisitas']) < 1:
+            messages.warning(request, 'El informe no pudo ser creado. ' +
+                             str(inf.publicador)+' informó cursos biblicos sin revisitas.')
+            request.session['error_informes'] = True
+            break
+
+        if int(value['horas']) > 200:
+            messages.warning(request, 'El informe no pudo ser creado. ' +
+                             str(inf.publicador)+' informó mas de 200 horas.')
+            request.session['error_informes'] = True
+            break
+
+        if int(value['cursos']) > int(value['revisitas']):
+            messages.warning(request, 'El informe no pudo ser creado. ' + str(
+                inf.publicador)+' informó mas cursos biblicos que revisitas.')
+            request.session['error_informes'] = True
+            break
+
+        request.session['error_informes'] = False
 
 
 def limpiar_carro(request):
@@ -236,7 +267,6 @@ def cancelar_informe(request):
 
 
 class InformeMensualList(LoginRequiredMixin, ListView):
-    #login_url = 'login'
     model = InformeMensual
     template_name = "list_informes_mensuales.html"
 
@@ -252,10 +282,32 @@ def lista_informes_publicador(request, id):
                 request, 'Publicador no tiene informes registrados.')
             return redirect('publicadores_por_grupo', publicador.grupo.numero)
         else:
-            return render(request, 'lista_informes_publicador.html', {'informes': informes, 'publicador': publicador})
+            informes_seis_meses = InformePublicador.objects.filter(publicador=publicador).order_by('-id')
+            data = {
+                'informes': informes, 
+                'publicador': publicador,
+                'total_pub': InformePublicador.objects.filter(publicador=publicador).aggregate(Sum('publicaciones'))['publicaciones__sum'],
+                'total_vid': InformePublicador.objects.filter(publicador=publicador).aggregate(Sum('videos'))['videos__sum'],
+                'total_horas': InformePublicador.objects.filter(publicador=publicador).aggregate(Sum('horas'))['horas__sum'],
+                'total_revisitas': InformePublicador.objects.filter(publicador=publicador).aggregate(Sum('revisitas'))['revisitas__sum'],
+                'total_cursos': InformePublicador.objects.filter(publicador=publicador).aggregate(Sum('cursos'))['cursos__sum'],
+                'prom_pub': InformePublicador.objects.filter(publicador=publicador).aggregate(Avg('publicaciones'))['publicaciones__avg'],
+                'prom_vid': InformePublicador.objects.filter(publicador=publicador).aggregate(Avg('videos'))['videos__avg'],
+                'prom_horas': InformePublicador.objects.filter(publicador=publicador).aggregate(Avg('horas'))['horas__avg'],
+                'prom_revisitas': InformePublicador.objects.filter(publicador=publicador).aggregate(Avg('revisitas'))['revisitas__avg'],
+                'prom_cursos': InformePublicador.objects.filter(publicador=publicador).aggregate(Avg('cursos'))['cursos__avg'],
 
-    except:
+                'prom_pub_seis': informes_seis_meses[:6].aggregate(Avg('publicaciones'))['publicaciones__avg'],
+                'prom_vid_seis': informes_seis_meses[:6].aggregate(Avg('videos'))['videos__avg'],
+                'prom_hor_seis': informes_seis_meses[:6].aggregate(Avg('horas'))['horas__avg'],
+                'prom_rev_seis': informes_seis_meses[:6].aggregate(Avg('revisitas'))['revisitas__avg'],
+                'prom_cur_seis': informes_seis_meses[:6].aggregate(Avg('cursos'))['cursos__avg'],
+                }
+            return render(request, 'lista_informes_publicador.html', data)
+
+    except Exception as e:
         messages.warning(request, 'Publicador no tiene informes registrados.')
+        print(e)
         return redirect('grupos')
 
 

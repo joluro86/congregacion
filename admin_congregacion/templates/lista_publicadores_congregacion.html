@@ -1,17 +1,14 @@
 {% extends "index.html" %}
 
 {% block content %}
-<div class="contenedor_grupos_inactivos">    
+<div class="contenedor_grupos_inactivos">
     <div class="publicadores">
-        <div>
-            <button style="float: left;" class="m-3 btn btn-secondary btn-sm">Print</button>
-            <h1 style="float:left; width: 80%; background-color: red; margin-top: 20px;">Publicadores Total: {{total}}</h1>            
-        </div>        
+        <h1>Publicadores</h1>
         {% if messages %}
         <ul class="messages list-group text-center">
             {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }} list-group-item" {% endif %}>{{ message }}</li>
-            {% endfor %}
+            <li{% if message.tags %} class="{{ message.tags }} list-group-item" {% endif %}>{{ message }}</li>
+                {% endfor %}
         </ul>
         {% endif %}
         {% if publicadores %}
@@ -20,24 +17,23 @@
                 {% for p in publicadores %}
                 <tr>
                     <td class="nombre_pub">{{ p }}</td>
-                    <td class="nombre_pub">{{ p.grupo }}</td>
                     <td><a class="acciones_pub" href="{% url 'informes_publicador' p.id %}" title="Informes"><i class="fa-solid fa-file-arrow-up"></i></a>
                         <span class="estado_pub">
-                            
+
                             {% if p.estado.estado == 'Inactivo' %}
-                                <span class="text-danger font-weight-bold">{{p.estado}}</span>
+                            <span class="text-danger font-weight-bold">{{p.estado}}</span>
                             {% else %}
-                                {{p.estado}}
+                            {{p.estado}}
                             {% endif %}
-                                    
+
                         </span>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
-        </table>        
-        {% endif %} 
+        </table>
+        {% endif %}
     </div>
-    
+
 </div>
 {% endblock content %}
